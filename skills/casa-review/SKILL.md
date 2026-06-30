@@ -68,11 +68,10 @@ decisions. It is the review half of the build then review loop.
 
 ## Grade mode (score a completed deliverable)
 
-Invoked as `casa-review grade <nodeId>` (the dashboard's "score this" intent and the
-casa-serve build and chat steps call it). This is a quality grade of one finished
-deliverable, not the persona panel. It returns a score 0-100, a pass or fail, and a
-short list of concrete gaps, combining deterministic checks with an LLM judgment, and
-it persists the score so the dashboard can show it on the node.
+Invoked as `casa-review grade <nodeId>` (called after a `casa-build` to score the
+output). This is a quality grade of one finished deliverable, not the persona panel.
+It returns a score 0-100, a pass or fail, and a short list of concrete gaps, combining
+deterministic checks with an LLM judgment, and it persists the score on the node.
 
 1. Load the spec. Read `${CLAUDE_PLUGIN_ROOT}/playbooks/_index.json` and find the entry
    whose `id` is `<nodeId>`. Pull two optional fields:
@@ -118,11 +117,11 @@ it persists the score so the dashboard can show it on the node.
      playbook carries no `deliverable` or `rubric`.
    - Default pass threshold: `score >= 70` AND no deterministic hard violation.
 
-6. Persist the score. Append one line to `company-brain/console/scores.jsonl` so the
-   dashboard can show it on the node card and detail:
+6. Persist the score. Append one line to `company-brain/scores.jsonl` so the score
+   travels with the node:
 
    ```
-   node -e 'const fs=require("fs"),pa=require("path"),p="company-brain/console/scores.jsonl";fs.mkdirSync(pa.dirname(p),{recursive:true});fs.appendFileSync(p,JSON.stringify({nodeId:process.argv[1],score:Number(process.argv[2]),pass:process.argv[3]==="true",gaps:JSON.parse(process.argv[4]),ts:new Date().toISOString()})+"\n")' <nodeId> <score> <true|false> '["gap one","gap two"]'
+   node -e 'const fs=require("fs"),pa=require("path"),p="company-brain/scores.jsonl";fs.mkdirSync(pa.dirname(p),{recursive:true});fs.appendFileSync(p,JSON.stringify({nodeId:process.argv[1],score:Number(process.argv[2]),pass:process.argv[3]==="true",gaps:JSON.parse(process.argv[4]),ts:new Date().toISOString()})+"\n")' <nodeId> <score> <true|false> '["gap one","gap two"]'
    ```
 
    The persisted shape is `{ "nodeId", "score", "pass", "gaps": [...], "ts" }`,

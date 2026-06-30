@@ -431,4 +431,8 @@ short, date entries, never delete the protocol).
   Conductor-style tabbed terminal app is a later shell on the same plugin, not built.
 - Next: confirm the OSS repo URL (homepage is a placeholder) and publish; live founder dogfood of the full
   casa-cos -> casa-build/casa-parallel -> casa-review loop; then the tabbed app.
+- Console removed from v4 (2026-06-29): per founder feedback the terminal is enough, so the
+  visual Console was deleted (console/, skills/casa-console, skills/casa-serve, tests/adapter.test.mjs).
+  The runtime never depended on it; casa-review grade mode now writes company-brain/scores.jsonl
+  (was console/scores.jsonl). The Console supersessions in rule 1 above are now historical.
 <!-- /CASA:AUTO:repo-status -->
