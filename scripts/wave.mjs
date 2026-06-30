@@ -79,4 +79,4 @@ function main() {
   const w = computeWave(loadIndex(), profile, { completed: state.completed || [], level, weights: pulse.weights || null, binding_constraint, department, k });
   console.log(JSON.stringify(w, null, 2));
 }
-if (import.meta.url === `file://${process.argv[1]}`) main();
+if (process.argv[1] && (await import("node:url")).fileURLToPath(import.meta.url) === process.argv[1]) main();

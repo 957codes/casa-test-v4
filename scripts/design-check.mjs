@@ -116,4 +116,4 @@ function main() {
   console.log(JSON.stringify(analyze(spec, sources), null, 2));
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) main();
+if (process.argv[1] && (await import("node:url")).fileURLToPath(import.meta.url) === process.argv[1]) main();

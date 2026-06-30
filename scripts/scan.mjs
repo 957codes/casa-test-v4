@@ -99,4 +99,4 @@ export function scanDir(dir) {
 function main() {
   console.log(JSON.stringify(scanDir(process.argv[2] || "."), null, 2));
 }
-if (import.meta.url === `file://${process.argv[1]}`) main();
+if (process.argv[1] && (await import("node:url")).fileURLToPath(import.meta.url) === process.argv[1]) main();
