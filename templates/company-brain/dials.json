@@ -1,0 +1,11 @@
+{
+  "_note": "Per-department autonomy dials. casa-start rewrites `departments` per company from the derived department set. `default` applies to any department not listed. `always_ask` actions require human approval no matter how autonomous a department is set.",
+  "default": "approve_first",
+  "departments": {
+    "engineering": "auto",
+    "strategy": "approve_first",
+    "marketing": "approve_first",
+    "finance": "approve_first"
+  },
+  "always_ask": ["spend_money", "go_public", "merge_to_main", "destructive"]
+}

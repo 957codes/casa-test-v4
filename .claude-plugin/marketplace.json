@@ -1,0 +1,16 @@
+{
+  "name": "capx-casa",
+  "owner": {
+    "name": "Capx",
+    "url": "https://capx.ai"
+  },
+  "plugins": [
+    {
+      "name": "capx-casa",
+      "source": "./",
+      "description": "The open control plane for running a company from your terminal: departments, operator agents, parallel dispatch, and a Chief of Staff.",
+      "license": "MIT",
+      "category": "business"
+    }
+  ]
+}
