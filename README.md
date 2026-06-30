@@ -122,6 +122,91 @@ carries a level (0 to 8) that controls when it becomes ready: you cannot run a l
 before there is a product, and a play never surfaces before its prerequisites exist. You see
 departments and a binding constraint; the engine sequences the work underneath.
 
+## The agents: operators that do the work, advisors that check it
+
+Behind the playbooks sit two kinds of specialist agents. Casa derives which ones your
+company needs at `casa-start` from your type and binding constraint, and instantiates only
+those.
+
+**Operators do the work.** Fourteen specialist agents, each owning a cluster of
+departments. When you run a play, Casa routes it to the operator that staffs its
+department, and the operator produces the real artifact, not an outline.
+
+| Operator | Department | What it does |
+|---|---|---|
+| `casa-strategist` | Strategy | Venture viability, business model, pricing strategy, stage-gate decisions |
+| `casa-researcher` | Strategy | Market, customer, and competitive research; evidence for validation |
+| `casa-brand` | Brand | Naming, entity-formation prep, positioning, the brand system |
+| `casa-product` | Product | MVP scoping, feature prioritization, roadmap, product specs |
+| `casa-engineer` | Engineering | Stack, deployment, DevOps, observability, security baseline, incident response |
+| `casa-analyst` | Data | Event taxonomy, dashboards, attribution, north-star instrumentation |
+| `casa-growth` | Growth | Experiment design, channel selection, funnel and CRO, traction loops |
+| `casa-marketer` | Growth | GTM, content, social, paid acquisition, SEO, creative |
+| `casa-lifecycle` | Growth | Email and lifecycle, nurture, retention, win-back |
+| `casa-partnership` | Operations, Growth | Partnerships, integrations, business development, co-marketing |
+| `casa-sales` | Sales | Sales process, prospecting, pitch, pricing negotiation, deal management |
+| `casa-success` | Success | Onboarding, success playbooks, retention, expansion, health scoring |
+| `casa-finance` | Finance | Unit economics, runway, cap table, financial model, fundraising materials |
+| `casa-operator` | Operations, Legal | Hiring, legal and compliance roadmap, process design, vendor strategy |
+
+**Advisors check it.** A standing panel of ten reviewers grades an operator's output and
+catches what it missed: `analyst-honesty` (numbers and vanity metrics), `investor-redteam`
+(the thesis), `customer-skeptic` (value prop and ICP fit), `brand-copy-critic` (the canon
+and tone), `designers-eye` (UI and accessibility), plus `plan-auditor`,
+`evidence-researcher`, `project-scanner`, `playbook-planner`, and `casa-learnings`. They run
+in parallel inside `/casa-review`.
+
+The split is the point: operators move fast and produce; advisors keep the bar high. An
+operator drafts, the advisors grade, you address what matters, the engine advances.
+
+**Derived per company.** A B2B SaaS with a revenue constraint gets Sales, Finance, and
+Success operators with Finance and Sales leading. A consumer app with a user constraint gets
+Growth and Data with Growth leading. An on-chain project with a regulatory constraint pulls
+in the Legal operator as the lead. You can override the derived set.
+
+## How a work session runs
+
+The day-to-day v4 loop:
+
+1. **The Chief of Staff opens the session (`/casa-cos`).** Re-instantiated every time, it
+   reads the whole business from durable state (no re-explaining) and gives you one
+   briefing: the single next move and which operator runs it, what is in flight across your
+   other terminals, what is blocked waiting on your approval, and whether two independent
+   lanes could run in parallel.
+2. **You dispatch the work.** The Chief of Staff routes the move to the operator that owns it
+   through `/casa-build`, or fans it out with `/casa-parallel` if it splits. Each action runs
+   under your autonomy setting for its department.
+3. **Advisors check it (`/casa-review`).** The relevant panel grades the artifact in
+   parallel; you address the P0 and P1 findings before it is marked done and the engine
+   advances to what is now unblocked.
+4. **Everything syncs.** Every worker, in every terminal, writes a thin line to a shared,
+   append-only ledger. That is how a marketing terminal and an engineering terminal stay one
+   coherent picture, and how the next session knows what already happened.
+
+### Going faster: parallel dispatch (`/casa-parallel`)
+
+When a task is big and breaks into independent pieces (a research sweep, a multi-file build,
+a multi-dimension audit, a content kit), `/casa-parallel` fans it out across subagents, then
+auto-merges and verifies the result. It is deliberate about when it does this: a planner only
+splits when the pieces are genuinely independent and each is large enough that the speedup
+beats the merge overhead, balances the chunks so the slowest does not cap you, and keeps any
+dependent step serial. For code, the merge step runs the real test suite (not each worker's
+mocked unit test), so a worker that drifted from the shared contract is caught. On a single
+account this is roughly 2 to 3x on the right tasks; more accounts raise the ceiling.
+
+### Staying in control: autonomy and approvals
+
+Each department has an autonomy dial: `auto` (reversible work runs without asking) or
+`approve_first` (Casa proposes and waits). On top of that sits an always-ask line that no
+dial can cross: spending money, going public, merging to main, or anything destructive always
+stops for you. When a worker hits that line it records the task as blocked and it joins your
+approvals queue; you clear the queue from your main terminal and the waiting worker, here or
+in another terminal, resumes.
+
+The deterministic engine still owns what is eligible, what depends on what, and what is gated,
+so an agent can never skip a gate, invent a dependency, or run out-of-order work. The agents
+reason and produce; the engine is the guardrail.
+
 ## Commands
 
 | Command | What it does |
