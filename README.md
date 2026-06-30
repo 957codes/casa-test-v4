@@ -165,7 +165,7 @@ These do the work and check it.
 2. Install the plugin:
 
    ```
-   /plugin marketplace add https://github.com/957codes/casa
+   /plugin marketplace add https://github.com/957codes/casa-test-v4
    /plugin install capx-casa
    ```
 
