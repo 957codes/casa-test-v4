@@ -215,7 +215,7 @@ reason and produce; the engine is the guardrail.
 | `/casa-priority` | Re-evaluate where the company is and get your ranked priorities for this session |
 | `/casa-board` | See your company as department lanes led by the binding constraint, then run a wave of parallel drafts |
 | `/casa-department <name>` | Focus a work session on one function (Engineering, Growth, Finance, ...) |
-| `/casa-cos` | The Chief of Staff: open a session, see the next move and who runs it, what is blocked, and what can run in parallel, then dispatch it |
+| `/casa-cos` | The Chief of Staff: opens a session, tells you in plain English where you are and the one move it recommends and why, then asks before doing anything |
 | `/casa-parallel` | Fan a big independent task out across subagents, auto-merge, and verify the result with a real test run |
 | `/casa-next` | The always-on advisor: your single next best action |
 | `/casa-map` | Show and approve your personalized build map |

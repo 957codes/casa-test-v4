@@ -109,7 +109,9 @@ if (process.argv[1] && (await import("node:url")).fileURLToPath(import.meta.url)
   }
   const roster = deriveRoster(profile);
   if (write && brainDir) {
-    const departments = Object.fromEntries(roster.departments.map((d) => [d, d === "Engineering" ? "auto" : "approve_first"]));
+    // Default every department to approve-first: nothing runs unannounced. A founder can
+    // dial a department to "auto" later once they trust it for reversible work.
+    const departments = Object.fromEntries(roster.departments.map((d) => [d, "approve_first"]));
     const dials = { default: "approve_first", departments, always_ask: ["spend_money", "go_public", "merge_to_main", "destructive"] };
     writeFileSync(join(brainDir, "dials.json"), JSON.stringify(dials, null, 2) + "\n");
     writeFileSync(join(brainDir, "roster.json"), JSON.stringify(roster, null, 2) + "\n");
