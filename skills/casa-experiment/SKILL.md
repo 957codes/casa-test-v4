@@ -10,6 +10,9 @@ and a guardrail, and keeps a durable record so the company stops re-running lose
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Frame the hypothesis. State it as: if we do X, then primary metric M moves by
    roughly E, because of mechanism C. A hypothesis with no mechanism is a guess.
 

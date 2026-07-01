@@ -1,6 +1,6 @@
 ---
 name: casa-parallel
-description: Run a large task faster by fanning it out across parallel subagents, then auto-merging and verifying the result. Decomposes the work, asks the planner whether splitting is actually worth it, runs the independent pieces concurrently while recording each to the ledger, serializes any dependent tail, and runs a real verify gate before declaring done. Use when a task is big and breaks into independent pieces (a research sweep, a multi-file build, a multi-dimension audit, a content kit), or when the user says parallelize, fan out, split this up, or make this faster.
+description: Run a big task faster by splitting it into independent pieces and working them at the same time. Casa first checks the split is actually worth it, runs the pieces concurrently, then merges and verifies the combined result before calling it done. Use when a task is large and separable (a research sweep, a multi-file build, a multi-part audit, a content kit), or when the user says parallelize, fan out, split this up, or make this faster.
 ---
 
 # casa-parallel
@@ -12,6 +12,9 @@ work. This skill makes the planner decide, then executes the plan.
 The brain dir is `company-brain/`. All scripts live at `${CLAUDE_PLUGIN_ROOT}/scripts/`.
 
 ## Steps
+
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
 
 1. Decompose. Break the task into subtasks. For a playbook wave, the subtasks are the
    ready nodes (`node ${CLAUDE_PLUGIN_ROOT}/scripts/wave.mjs company-brain`). For an
@@ -55,8 +58,9 @@ The brain dir is `company-brain/`. All scripts live at `${CLAUDE_PLUGIN_ROOT}/sc
      overlaps and contradictions.
    - Record the merge: `... append company-brain '{"task":"merge-verify","status":"merged","decision":"<verify result>"}'`
 
-6. Report. Give the user the merged result, the modeled vs realized speedup, and a one
-   line note of what ran in parallel. The full timeline is in the ledger
+6. Report. Give the user the merged result and a one-line note of what ran in
+   parallel, in plain words. Do not quote modeled or realized speedup numbers unless
+   the founder asks. The full timeline is in the ledger
    (`node ${CLAUDE_PLUGIN_ROOT}/scripts/ledger.mjs status company-brain`).
 
 ## Notes

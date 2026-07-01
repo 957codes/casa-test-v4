@@ -10,6 +10,9 @@ the entries form a timeline. It never changes state; it reports.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Set the window. Default 7d unless the user names one (24h, 30d). Read
    `company-brain/NOW.md`, `build-map.json`, `state.json`, `finance/receipts.jsonl`,
    `experiments.jsonl`, and the latest `decisions/`. Pull live numbers from any

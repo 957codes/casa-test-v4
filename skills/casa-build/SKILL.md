@@ -11,13 +11,17 @@ build then review loop (casa-review is the other half).
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Pick the node. Read `company-brain/build-map.json` and `NOW.md`. The target is
    either the id the user named or the top ready action. Confirm its status is
    `ready` (not `blocked` or `done`). If the user named a blocked node, say what it
    is waiting on and stop.
 
-2. Load the playbook and its inputs. Read the playbook file at
-   `${CLAUDE_PLUGIN_ROOT}/playbooks/level-<N>/<id>.md`. Read its `## Procedure`, its
+2. Load the playbook and its inputs. Playbook files are numbered `NNN-<id>.md`, so
+   find the file with a glob: `${CLAUDE_PLUGIN_ROOT}/playbooks/level-<N>/*-<id>.md`.
+   Read its `## Procedure`, its
    `consumes` artifacts (load each from `company-brain/`), and its `produces`
    artifact name. If a consumed artifact is missing, stop and route the founder to
    the playbook that produces it.
@@ -40,15 +44,30 @@ build then review loop (casa-review is the other half).
    and get explicit approval. Route any paid action to `casa-pay`. Never file, pay,
    sign, send, or publish on your own.
 
-5. Write the artifact. Save the produced artifact to its path under
-   `company-brain/`. If a significant decision was made, append a record to
+5. Write the artifact. Save the produced artifact to `company-brain/outputs/<id>/`.
+   This path is the contract: casa-review, casa-board, and casa-department all read
+   and grade from it. If a significant decision was made, append a record to
    `decisions/`.
 
-6. Review before done. Run `casa-review` on the produced artifact (the personas that
+6. Hand off what only the founder can do. If the playbook requires a real-world
+   founder action Casa cannot perform (customer interviews, a filing, a phone call),
+   do all the preparation work first (the script, the list, the draft), then mark the
+   play as waiting on the founder:
+
+   ```
+   node ${CLAUDE_PLUGIN_ROOT}/scripts/brain.mjs waiting company-brain <id> "<what the founder must do>"
+   ```
+
+   Tell the founder in plain words exactly what to do, and how to come back: when it
+   is done, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/brain.mjs unwait company-brain <id>`
+   and then complete the play (step 8). Until then it shows under "Waiting on you" in
+   NOW.md. Never mark a waiting play done.
+
+7. Review before done. Run `casa-review` on the produced artifact (the personas that
    fit its type). Address P0 and P1 findings before continuing. For a low-stakes
    artifact a single self-review pass is enough.
 
-7. Mark it done. Advance the deterministic state:
+8. Mark it done. Advance the deterministic state:
 
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/brain.mjs complete company-brain <id>

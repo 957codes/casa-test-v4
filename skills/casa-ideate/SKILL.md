@@ -10,6 +10,9 @@ ranking. Generate widely, kill most, explain the few that survive.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Ground the question. Read `company-brain/STRATEGY.md`, `profile.json`,
    `build-map.json`, the latest `decisions/`, and `learnings.jsonl`. Frame the
    specific decision the founder faces and the constraint it lives under (budget,

@@ -1,6 +1,6 @@
 ---
 name: casa-board
-description: Run a WAVE across the department board. Computes the set of ready, DAG-independent plays concentrated on the binding constraint's lead lanes, fans out one in-session subagent per play to DRAFT it in parallel, grades each draft against its rubric (a self-grade never counts as verified), then serial-commits the passing drafts through the engine. Use to make concurrent progress across the company instead of one play at a time. Interactive and subscription-safe; the founder is present and is the executor.
+description: Move several parts of the company forward at once. Casa picks a handful of independent pieces of ready work, aimed at the one problem holding the company back, drafts them in parallel, checks each against its quality bar, and commits only what passes. Use when you want a work session that advances the whole company instead of one task at a time. You stay present and in control throughout.
 argument-hint: "[k:N] (max parallel drafts this wave, default 3)"
 ---
 
@@ -25,6 +25,9 @@ in the COMMITTING (one writer, cheap), so the company brain can never be corrupt
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Sync, so the wave is computed from current state:
 
    ```
@@ -39,8 +42,11 @@ in the COMMITTING (one writer, cheap), so the company brain can never be corrupt
 
    Read the JSON. If `fallback_to_next` is true (frontier under 2 independent plays), a
    wave is not worth the overhead: tell the founder to run `/casa-next` for the single
-   best move and STOP. Otherwise show the wave: the play ids, the lead departments, and
-   the actual `frontier_width` (never claim more parallelism than this).
+   best move and STOP. Otherwise describe the wave to the founder in plain words: what
+   each piece of work is (its title, not its id), which part of the company it belongs
+   to, and how many can genuinely run at once. Never claim more parallelism than the
+   returned `frontier_width`; keep the ids and the raw JSON out of the founder-facing
+   text unless asked.
 
 3. Fan out, one in-session subagent PER wave node, in parallel. Give each subagent ONLY:
    its `nodeId`, the playbook entry from `${CLAUDE_PLUGIN_ROOT}/playbooks/_index.json`
@@ -75,8 +81,10 @@ in the COMMITTING (one writer, cheap), so the company brain can never be corrupt
    node ${CLAUDE_PLUGIN_ROOT}/scripts/brain.mjs complete company-brain <nodeId>
    ```
 
-6. Re-sync and report the wave outcome: drafted / graded / committed / re-queued per
-   node, the new level if it advanced, and the next wave's `frontier_width`. If a commit
+6. Re-sync and report the wave outcome in plain words: what was drafted, what passed
+   the quality check and was committed, what fell short and stays open for a later
+   wave, and whether the company moved forward a stage. Keep node ids, grades, and
+   internal counters out of the founder-facing report unless asked. If a commit
    advanced the level, STOP after this wave (the next wave is recomputed fresh) rather
    than draft against stale readiness.
 

@@ -10,6 +10,9 @@ slip. Tone is institutional and category-creating, never founder-bro.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Frame the piece. Identify the artifact to produce (from a playbook's `produces`,
    or the user's request) and its reader. Read the company brain for voice:
    `profile.json`, any locked positioning and tone in `decisions/`, and

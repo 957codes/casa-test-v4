@@ -23,16 +23,18 @@ decisions. It is the review half of the build then review loop.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Scope. Identify the artifact and its type (decision, copy, plan, pricing,
    positioning, design, metrics, deck). Read it, plus `profile.json`,
    `build-map.json`, and any `decisions/` it references.
 
 2. Select personas. Always-on: `customer-skeptic`, `investor-redteam`,
    `brand-copy-critic`, `analyst-honesty`. Add conditional personas by signal:
-   `designers-eye` for UI, `legal-risk` for legal or contract or privacy artifacts,
-   `tokenomics-critic` when the artifact touches a token or on-chain mechanics,
-   `compliance-trust` when it touches custody or payments. Select by judgment about
-   the artifact, not by keyword.
+   `designers-eye` for UI, `legal-risk` for legal, contract, privacy, custody, or
+   payments artifacts, `tokenomics-critic` when the artifact touches a token or
+   on-chain mechanics. Select by judgment about the artifact, not by keyword.
 
 3. Spawn the personas in parallel as subagents. Give each the artifact and the
    context. Each returns ONLY this JSON, no prose:
@@ -57,10 +59,13 @@ decisions. It is the review half of the build then review loop.
    - Order by severity, then confidence.
 
 5. Output.
-   - Interactive: a ranked briefing. For each surviving finding give the persona,
-     severity, the why, and the fix. Group safe, reversible fixes and offer to apply
-     them. Never auto-apply an irreversible, legal, or money change.
-   - mode:agent: print the merged JSON only and stop.
+   - Interactive: a ranked briefing in plain language. For each surviving finding say
+     who raised it, how serious it is in plain words (must fix, should fix, or worth
+     considering, never a P0/P1 label unless the founder asks), the why, and the fix.
+     Group safe, reversible fixes and offer to apply them. Never auto-apply an
+     irreversible, legal, or money change.
+   - mode:agent: print the merged JSON only and stop (severity codes stay intact there;
+     that output is for the engine, not the founder).
 
 6. Record. Append a short review record to `company-brain/ledger/` (artifact,
    personas run, count of surviving findings, verdict). Do not edit the artifact in

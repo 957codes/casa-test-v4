@@ -1,6 +1,6 @@
 ---
 name: casa-refresh
-description: Sweep the company's learning and decision store for drift against the current state, then update, consolidate, or retire entries that no longer hold. Keeps the brain from accumulating stale or contradictory guidance. Use periodically, or when the company has changed enough that old learnings may mislead.
+description: Prune and update the company's saved lessons so old guidance never misleads new work. Checks each saved lesson against the company as it is now, updates what has drifted, merges duplicates, and retires what no longer holds. Use periodically, or when the company has changed enough that old lessons may mislead.
 ---
 
 # casa-refresh
@@ -9,6 +9,9 @@ The anti-drift sweep. A learning store that is never maintained turns into a lia
 stale lessons get applied to a company that has moved on. This keeps it honest.
 
 ## Steps
+
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
 
 1. Load the store and the present. Read `company-brain/learnings.jsonl`, the
    `company-brain/playbooks/` notes, recent `decisions/`, and the current

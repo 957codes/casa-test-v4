@@ -11,6 +11,9 @@ real signal from a flattering one.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Gather the raw input. Read the notes the founder points to, plus any prior insight
    memos in `company-brain/` and the relevant playbook (for example
    `problem-validation-interviews`, `jobs-to-be-done-extraction`, `usability-testing-protocol`,

@@ -10,6 +10,9 @@ that costs money, route it to Capx Pay. Casa never holds funds, never prices an
 action, never charges a card, and never sets spend limits. Capx Pay owns the
 wallet, billing, credentials, and spend governance.
 
+If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+first and stop.
+
 ## Detect Capx Pay
 
 Pay is installed if the `capx_*` MCP tools are available in this session

@@ -19,6 +19,9 @@ appears under "Loops due now" in `NOW.md` at session start.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. See what is due. Read `company-brain/NOW.md` ("Loops due now"), or list all
    loops from `company-brain/loops.json` with their cadence and what triggers them.
    A loop is due when its `cadence_days` have passed since it last ran, it is at or

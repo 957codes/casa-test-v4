@@ -36,8 +36,34 @@ gaps instead of answering everything cold.
    horizon, anti-priorities, funding), and Backfill (skipped foundations). Skip any
    question whose `ask_when` is not met.
 
-   A. Empty folder (`is_existing_project` is false). Run all four passes:
-   Define + Locate + Core + Backfill. Ask everything cold (about 8 to 12 questions).
+   A. Empty folder (`is_existing_project` is false). Run all four passes (Define +
+      Locate + Core + Backfill) conversationally, in about 6 to 9 interactions, never
+      as a cold questionnaire:
+      i. Ask the `one_liner` and the stage `tier` first. These two answers carry most
+         of the signal.
+      ii. Infer, do not interrogate. From the one_liner, INFER every low-yield Define
+         answer you can: `type` (exactly one of saas, marketplace, ecommerce,
+         b2b-service, crypto, consumer, content, hardware), the trait questions
+         (software, local_service, sends_email, collects_data, technical_audience,
+         runs_paid_media, runs_agents), `monetization` if the one-liner states it, and
+         `audience`. Present ALL inferences in ONE batch confirmation the founder can
+         correct in a single reply ("Here is what I took from that; correct anything
+         wrong"). Never ask these as individual questions. Ask individually only what
+         genuinely cannot be inferred.
+      iii. Draft-map preview. After Define + Locate are confirmed, write the partial
+         answers so far to `company-brain/answers.json` and derive a draft (the Core
+         fields may still be absent; `stage.mjs derive` accepts that):
+
+         ```
+         node ${CLAUDE_PLUGIN_ROOT}/scripts/stage.mjs derive company-brain/answers.json
+         ```
+
+         Show a DRAFT plan preview: the top 4 or 5 plays in plain words and the
+         starting level, with one line: "Here is the shape of your plan. A few more
+         questions to tune it."
+      iv. Then run the Core pass as today (north star, do-or-die constraint, win
+         definition, horizon, anti-priorities, and funding where it applies), plus any
+         Backfill question whose `ask_when` holds.
 
    B. Existing project (`is_existing_project` is true). Do not interview cold. Let the
       scan do the Define and Locate work, and spend the budget on the Core pass plus a
@@ -89,8 +115,8 @@ gaps instead of answering everything cold.
    `anti_priorities` is an array of playbook ids and may be empty. Use only canonical
    values; `stage.mjs` validates the type, traits, tier, and gaps and errors on drift.
 
-5. Branch on the stage. Idea stage (`tier` is "idea") runs Level 0 validation via the
-   `level-0-validate` skill (GO or KILL). Any other stage skips validation; the business
+5. Branch on the stage. Idea stage (`tier` is "idea") runs the validation gate via the
+   `casa-validate` skill (GO or KILL). Any other stage skips validation; the business
    already exists and is not sent back to Level 0. An existing project is almost never
    idea stage.
 
@@ -169,7 +195,9 @@ gaps instead of answering everything cold.
 8. Show the build map with `casa-map` and get approval. Call out the current level, the
    catch-up items, and the critical path.
 
-9. Hand off to `casa-next` for the first action, or `casa-priority` for a fuller briefing.
+9. Hand off to `/casa` (the front door). It opens the first working session: a plain
+   briefing on where the company is and the single move to make, asked before anything
+   runs.
 
 ## Rules
 

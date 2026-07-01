@@ -1,6 +1,6 @@
 ---
 name: casa-compound
-description: Capture a freshly solved problem or a result into the company's durable learning store so the next run starts ahead. Writes a structured, searchable learning to the company brain and keeps the brain discoverable. Use after solving something non-obvious, closing an experiment, or finishing a hard task worth not relearning.
+description: Save a lesson the company learned so the next run starts smarter. Writes what worked, what did not, and the guidance for next time into the company's memory, where future sessions will find it. Use after solving something non-obvious, closing an experiment, or finishing a hard task worth not relearning.
 ---
 
 # casa-compound
@@ -9,6 +9,9 @@ The compounding craft. Each unit of work should make the next easier. This captu
 what was learned, while it is fresh, in a form the next session can find.
 
 ## Steps
+
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
 
 1. Capture while fresh. Identify the lesson: what problem, what was tried, what
    actually worked, what did not, and the guidance for next time (repeat this, avoid

@@ -13,6 +13,9 @@ waits for your call.
 
 The brain dir is `company-brain/`. Scripts live at `${CLAUDE_PLUGIN_ROOT}/scripts/`.
 
+`/casa` is the front-door alias of this flow; it follows this procedure exactly, and
+this body is the canonical version.
+
 ## The golden rule
 
 Propose first, in plain English, and WAIT. Never run a play, never dispatch work, never fan
@@ -22,13 +25,19 @@ work. If you are ever unsure whether to act, do not act: ask.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Read the business quietly. Load the state so you understand the company without making
    the founder re-explain it. Do this silently; do not narrate the loading.
    ```
    node ${CLAUDE_PLUGIN_ROOT}/scripts/cos-context.mjs company-brain
    node ${CLAUDE_PLUGIN_ROOT}/scripts/ledger.mjs status company-brain
+   node ${CLAUDE_PLUGIN_ROOT}/scripts/approvals.mjs pending company-brain
    ```
-   Also read `company-brain/NOW.md` and `company-brain/pulse.json` for the founder's goal
+   cos-context returns the binding constraint and the waiting list (plays marked waiting
+   on a real-world founder action). Also read `company-brain/NOW.md` (including its
+   "Waiting on you" section) and `company-brain/pulse.json` for the founder's goal
    and the do-or-die constraint.
 
 2. Get the ranked options, but DO NOT act on them: `casa-next` (or `router.mjs next`). Treat
@@ -37,13 +46,17 @@ work. If you are ever unsure whether to act, do not act: ask.
 3. Brief in plain English. Write a SHORT brief a busy, non-technical founder understands in
    ten seconds. Four small parts, no headers needed, just clear sentences:
    - Where you are: one or two sentences. The company, its stage, and the one problem that
-     matters most right now, in plain words.
+     matters most right now (the binding constraint, in plain words, never as a field name).
    - What I would do next: the single most important move, named simply, and WHY it matters
      for your goal. One short paragraph. No playbook ids, no department theory, no metrics or
      speedup numbers.
    - What it would involve: one or two sentences on what doing it actually takes, and whether
      any of it would cost money, go public, or be hard to undo (say so plainly if it would).
-   - Waiting on you: if the ledger shows anything blocked, one plain line each. Otherwise skip.
+   - Waiting on you: one plain line each for anything the founder must act on, from all
+     three sources: pending approvals (the approvals queue), plays marked waiting on a
+     real-world founder action (the waiting list from cos-context and the "Waiting on
+     you" section of NOW.md), and anything the ledger shows blocked. Say what to do and
+     how to clear each one. If nothing is waiting, skip this part.
 
 4. Ask, then STOP. End with a simple question, for example "Want me to go ahead with this, or
    point me somewhere else?" Then wait. Do nothing else. The founder is the approver, and your

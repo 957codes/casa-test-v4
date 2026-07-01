@@ -1,6 +1,6 @@
 ---
 name: casa-promote
-description: Draft launch and announcement copy for a company milestone or a Capx feature, in the channel the user names (an X post or thread, a changelog entry, a LinkedIn post, an email, a blog intro). Canon constraints are hard-wired and enforced by the copy linter. Use after shipping something worth announcing.
+description: Draft launch and announcement copy for a company milestone, in the channel the user names (an X post or thread, a changelog entry, a LinkedIn post, an email, a blog intro). It drafts and checks the copy to the house standard and hands it to you; it publishes nothing. Posting is always yours. Use after shipping something worth announcing.
 ---
 
 # casa-promote
@@ -9,6 +9,9 @@ The announcement craft. Turns a shipped milestone into channel-specific copy tha
 sounds institutional, not like a hype thread. The canon is enforced, not hoped for.
 
 ## Steps
+
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
 
 1. Establish what shipped and why it matters. Read the relevant `decisions/`,
    `experiments.jsonl`, `build-map.json`, and `STRATEGY.md`. Name the concrete change

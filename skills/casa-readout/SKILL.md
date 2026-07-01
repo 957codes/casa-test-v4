@@ -10,6 +10,9 @@ straight. Pairs with the analyst-honesty review persona.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Gather the numbers. Take the metrics the founder pastes, or pull them from an
    analytics or billing source they have connected via MCP (integrate, do not vendor;
    never bundle a closed analytics tool). Read the relevant playbook

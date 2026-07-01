@@ -11,6 +11,9 @@ questions, with pushback on weak answers.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Read what exists. Load `company-brain/STRATEGY.md` if present, plus
    `profile.json`, the latest `decisions/`, and `build-map.json`. If STRATEGY.md
    exists, you are updating it, not starting over.

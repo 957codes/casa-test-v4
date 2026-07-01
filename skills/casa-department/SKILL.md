@@ -1,6 +1,6 @@
 ---
 name: casa-department
-description: Drive ONE department vertical. The founder names a department (Engineering, Growth, Finance, Brand, Success, Sales, Legal, Data, Product, Operations, Strategy) and Casa runs a wave scoped to that lane: it drafts that function's ready, independent plays in parallel, grades them, and commits the ones that pass. Use to focus a work session on a single function. Interactive and subscription-safe.
+description: Focus a work session on one part of the company. Name a department (Engineering, Growth, Finance, Brand, Success, Sales, Legal, Data, Product, Operations, Strategy) and Casa drafts that function's ready work in parallel, checks it against the quality bar, and commits what passes. Use for a growth day, a finance day, or any session spent pushing a single function forward. You stay present and in control throughout.
 argument-hint: "<department> [k:N]"
 ---
 
@@ -21,6 +21,9 @@ department is a pure FILTER over it, never its own ranker.
 
 ## Steps
 
+0. If `company-brain/profile.json` does not exist, tell the founder to run /casa-start
+   first and stop.
+
 1. Sync:
 
    ```
@@ -33,9 +36,11 @@ department is a pure FILTER over it, never its own ranker.
    node ${CLAUDE_PLUGIN_ROOT}/scripts/wave.mjs company-brain --department <Department> --k 3
    ```
 
-   If the wave is empty, this lane has no ready work this cycle (it is a SUPPORT,
-   MAINTENANCE, or IDLE lane right now). Say so honestly, show the lane's blocked/locked
-   plays and what unblocks them, and suggest the lead lane from the board instead. STOP.
+   If the wave is empty, this lane has no ready work this cycle (internally it is a
+   SUPPORT, MAINTENANCE, or IDLE lane right now). Tell the founder honestly, in plain
+   words: this part of the company has nothing ready to work on right now, here is what
+   it is waiting on, and here is the part of the company that most needs attention
+   instead. STOP.
 
 3. Fan out one in-session subagent per wave node, in parallel, exactly as in casa-board
    step 3: each drafts its play for THIS company into `company-brain/outputs/<nodeId>/`
@@ -53,8 +58,10 @@ department is a pure FILTER over it, never its own ranker.
    node ${CLAUDE_PLUGIN_ROOT}/scripts/brain.mjs complete company-brain <nodeId>
    ```
 
-6. Re-sync and report this lane's outcome plus its updated standing on the board (done /
-   ready / blocked, and whether it is still the lead lane).
+6. Re-sync and report in plain words: what got done in this function, what remains and
+   what it is waiting on, and whether this is still the part of the company that most
+   needs attention. Keep node ids and internal lane labels out of the founder-facing
+   report unless asked.
 
 ## Rules
 
