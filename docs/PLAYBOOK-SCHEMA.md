@@ -53,7 +53,7 @@ The fitness score (scripts/router.mjs) is `leverage * urgency(slack) * stageFit 
 revenue / effort * pulseWeight`, where `stageFit` discounts work far below the company's level
 and `fitFactor = clamp(CRIT_W[effective criticality] * modelFit, [0.7, 1.8])`. The north star
 (scripts/northstar.mjs) is DERIVED from the profile (not a playbook field) for display and to
-seed the initial pulse. See docs/DEEP-ENGINE-PLAN.md.
+seed the initial pulse. See docs/history/DEEP-ENGINE-PLAN.md.
 
 ## Worked example: a Level 0 playbook
 
@@ -82,8 +82,9 @@ typical_milestone: validated-opportunity
 
 The highest-value playbooks (every `criticality: existential` one plus the most
 important `criticality: core` ones) carry an optional, machine-gradeable spec of
-what a good deliverable IS. The dashboard uses it to score a completed deliverable
-against a checkable bar and offer a make-it-better path. Both fields are OPTIONAL;
+what a good deliverable IS. The `casa-review` grade mode uses it to score a
+completed deliverable against a checkable bar and offer a make-it-better path.
+Both fields are OPTIONAL;
 a playbook without them is still valid. They are derived from the playbook's own
 Procedure / Output / Rules body, not invented.
 
@@ -119,11 +120,16 @@ rubric: Passes only when CAC is paid-only, fully loaded, and time-lagged (never 
 5. `level`, `relevance`, `effort`, `leverage`, `reversibility` use allowed values.
 6. `recurring: true` playbooks declare a cadence in the body.
 
-## Porting from the source drafts
+## Contributing a playbook
 
-The 100 source drafts are at `../capx-ai/playbooks/playbooks-output/`. Their
-hand-authored dependencies and parallel clusters are at
-`../capx-ai/playbooks/flows/dependencies.md` and `parallelism.md`. To port a
-playbook: lift its preconditions and unblocks into `depends_on` / `produces` /
-`consumes`, set the selection fields from the `domain` notes, condense the body
-into an executable workflow, and add it to `playbooks/level-N/`.
+The original long-form source drafts live in the maintainers' archive and are not
+part of this repo. Contributions go through `docs/playbook-drafts/`: author the
+draft there with the full frontmatter contract above, and see
+`docs/playbook-drafts/README.md` plus the repo `CONTRIBUTING.md` for the
+integration workflow. To adapt an existing long-form process into a playbook:
+lift its preconditions and unblocks into `depends_on` / `produces` / `consumes`,
+set the selection fields, and condense the body into an executable workflow.
+
+Note: a `source:` frontmatter field appeared in earlier versions of the catalog.
+It is no longer part of the contract and is being stripped; do not add it to new
+playbooks.

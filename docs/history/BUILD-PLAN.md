@@ -1,5 +1,7 @@
 # Capx Casa — Build Plan
 
+> Historical planning document, superseded. Kept for provenance.
+
 *Synthesised 2026-06-23 from internal research across architecture, the founder-100-things taxonomy, the competitive landscape, build-feasibility, compounding loops, GTM and wedge, and Capx strategic fit.*
 
 > Update 2026-06-23: wherever this plan says "Capx Gateway", read "Capx Pay". The metered action-and-payments layer has been productized as a separate companion product, Capx Pay (non-custodial wallet, card on-ramp, settles on Tempo via MPP, invisible to the founder). Casa does not build payments; it routes paid actions to Capx Pay by capability id and reads the receipts Pay writes to company-brain/finance/receipts.jsonl. See docs/ARCHITECTURE.md "The Capx Pay seam".
@@ -262,7 +264,7 @@ Runners-up: `casa company` (day-zero setup — best Gateway anchor but fires onc
 **Free/paid line = "thinking vs. doing-that-costs-real-money."**
 - The repo (skills, agents, router, loops, brain) — **free, MIT forever.** Never paywall prompts (kills distribution; a well-established precedent).
 - Inference — **free on the founder's own Claude Max plan**, interactive (Casa COGS ≈ $0).
-- **Capx Gateway** — metered MCP brokering real-world *actions* (domains, incorporation, email, creative gen, hosting) at 1.5-3x; also the legitimate home for v2 autonomous/operate loops (API-backed). The revenue engine. Keep it **independent of the Max arbitrage** so an Anthropic ToS change degrades the stack but not the business.
+- Monetization moved to the companion product Capx Pay; Casa itself is free forever.
 
 **Two-pillar tie (the connective tissue must ship, not defer):** companies built in Casa clear a verified-traction gate → tokenize on Solana → CAPX is the mandatory base pair → trading fees + 35/35/30 split + 3-5% protocol token retention + real-revenue accrual. The bridge is the **engine-attested metrics endpoint** — the company-brain's MRR/traction becomes the on-chain eligibility proof. Treat that endpoint as part of the launch wedge, or Pillar 2 races ahead while Pillar 1 stalls.
 

@@ -2,6 +2,11 @@
 
 The open control plane for building a company from your terminal.
 
+[![CI](https://github.com/957codes/casa/actions/workflows/test.yml/badge.svg)](https://github.com/957codes/casa/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-0-brightgreen)](docs/ARCHITECTURE.md)
+[![Tests](https://img.shields.io/badge/tests-173%20passing-brightgreen)](tests)
+
 AI made a single developer as productive as a whole team. Capx Casa does the same
 for the founder. A solo founder is excellent at one thing, but a company is a hundred
 things at once. Casa holds the hundred: it figures out which of them matter for
@@ -13,40 +18,55 @@ Code, on your own plan. No SaaS login, no hosted inference, nothing to deploy. T
 terminal is the source of truth, and the company's state is durable plain-text files
 you can read and edit yourself.
 
-## What it gives you
+## 60-second start
 
-- A library of 169 company-building playbooks (the "what to do"), each owned by one of
-  eleven departments (Strategy, Brand, Product, Engineering, Data, Growth, Sales, Finance,
-  Legal, Success, Operations).
-- A department board: your whole company as lanes, one per function, each with its own
-  north star. Casa diagnoses the ONE binding constraint that is the company's do-or-die
-  problem right now and leads the departments that resolve it, so you always know which
-  function to push and why.
-- A constraint-first router that selects the playbooks relevant to your business,
-  sequences them by dependency, and ranks them so the work that resolves your binding
-  constraint leads, not a generic checklist.
-- An always-on advisor that recommends your single next best action on every session,
-  plus a parallel "wave" mode that drafts several independent plays at once.
-- A Chief of Staff (`/casa-cos`) that opens each session by reading the whole business and
-  routing your next move to the operator who runs it, under your autonomy settings.
-- Fourteen specialist operator agents, derived per company from your type and binding
-  constraint, that do the department work; the existing review panel checks it.
-- A parallel-dispatch engine (`/casa-parallel`) that splits a big task across subagents
-  when, and only when, the work is independent and large enough to pay off, then
-  auto-merges and verifies the result with a real test run.
-- A cross-terminal ledger so work in any terminal becomes shared context for the rest,
-  with per-department autonomy dials and an approvals queue that stops anything which
-  spends money, ships publicly, or is irreversible until you say go.
-- Recurring loops for the work that never finishes (metrics, customers, growth).
-- A company brain: durable, versioned, plain-text memory that makes every run compound
-  on the last.
+```
+/plugin marketplace add https://github.com/957codes/casa
+/plugin install capx-casa
+/casa-start
+```
+
+Casa interviews you about the business (or reads the project you already have),
+builds a personalized plan that starts at the right level, and from then on greets
+every session with where you are and the one move that matters most.
+
+## What a session looks like
+
+```
+=== Capx Casa ===
+InboxPilot                Level 0: Ideation and Validation
+North star: validated demand, heading toward MRR
+Do or die: no users yet. Leading: Growth, Strategy.
+
+Next: Opportunity Scan (Strategy)
+Waiting on you: nothing
+Loops due: none
+
+Run /casa for a briefing, /casa-help for the map.
+=================
+
+> /casa
+
+InboxPilot is at Level 0 and the constraint is still no users:
+nothing so far proves anyone wants this. The highest-leverage
+move is the Opportunity Scan, a research pass across communities,
+reviews, and search data that either surfaces real demand or
+tells us to change course early. It runs in this session; nothing
+is spent and nothing goes public.
+
+Run the Opportunity Scan now? (yes / pick something else)
+```
+
+InboxPilot is a fictional example. A full example company,
+[examples/inboxpilot](examples/inboxpilot/), is committed to this repo so you can
+browse a real company brain, build map, and a graded artifact without installing
+anything.
 
 ## How Casa organizes the work: departments
 
-Casa organizes a company the way a founder thinks about it: by DEPARTMENT. Every playbook
-belongs to one of eleven functions, and Casa shows your company as a board of department
-lanes, each with its own north star (a projection of the one company north star onto that
-function).
+Casa organizes a company the way a founder thinks about it: by department. Every
+one of its 169 playbooks belongs to one of eleven functions, and Casa shows your
+company as a board of department lanes, each with its own north star.
 
 | Department | What it owns |
 |---|---|
@@ -62,175 +82,183 @@ function).
 | Brand | Positioning, narrative, and message resonance |
 | Operations | Cost to serve, fulfillment, and recurring-loop discipline |
 
-The board is a LENS, not a separate planner. Under the hood the engine still computes one
-global, constraint-aware ranking; a department lane is a filtered view of it, never its own
-ranking. That is what keeps the advice specific to YOUR company instead of a generic
-per-function checklist.
+Priority is decided by one thing: the binding constraint, the do-or-die problem
+that, left unsolved, kills the business at its current stage (no users, no revenue,
+a regulatory gate, runway, reliability at scale). Casa names it, puts the
+departments that resolve it in the lead, and lets the rest sit honestly as support
+or idle. The board is a lens, not a separate planner: underneath, one deterministic,
+constraint-aware ranking sequences everything, so the advice stays specific to your
+company instead of a generic per-function checklist. Each play also carries an
+internal level (0 to 8) that gates when it becomes ready, so a launch play can
+never run before there is a product.
 
-The one thing that decides priority is the binding constraint: the do-or-die problem that,
-left unsolved, kills the business at its current stage (no users, no revenue, a regulatory
-gate, runway, reliability at scale, capacity). Casa names it, leads the departments that
-resolve it (up to four co-leads), and sharpens the push by how far you are from your target.
-Departments with no urgent work this cycle sit honestly as Support, Maintenance, or Idle, so
-the board never pretends every lane is on fire.
+## The agents: operators do the work, advisors check it
 
-Maturity still matters, but as an INTERNAL gate, not the founder-facing frame. Each play
-carries a level (0 to 8) that controls when it becomes ready: you cannot run a launch play
-before there is a product, and a play never surfaces before its prerequisites exist. You see
-departments and a binding constraint; the engine sequences the work underneath.
+Casa derives which agents your company needs at `/casa-start` from your type and
+binding constraint, and instantiates only those.
 
-## The agents: operators that do the work, advisors that check it
-
-Behind the playbooks sit two kinds of specialist agents. Casa derives which ones your
-company needs at `casa-start` from your type and binding constraint, and instantiates only
-those.
-
-**Operators do the work.** Fourteen specialist agents, each owning a cluster of
-departments. When you run a play, Casa routes it to the operator that staffs its
-department, and the operator produces the real artifact, not an outline.
+**Fourteen operators produce the real artifacts**, each owning a cluster of
+departments:
 
 | Operator | Department | What it does |
 |---|---|---|
-| `casa-strategist` | Strategy | Venture viability, business model, pricing strategy, stage-gate decisions |
-| `casa-researcher` | Strategy | Market, customer, and competitive research; evidence for validation |
+| `casa-strategist` | Strategy | Viability, business model, pricing strategy, stage-gate decisions |
+| `casa-researcher` | Strategy | Market, customer, and competitive research |
 | `casa-brand` | Brand | Naming, entity-formation prep, positioning, the brand system |
-| `casa-product` | Product | MVP scoping, feature prioritization, roadmap, product specs |
-| `casa-engineer` | Engineering | Stack, deployment, DevOps, observability, security baseline, incident response |
-| `casa-analyst` | Data | Event taxonomy, dashboards, attribution, north-star instrumentation |
-| `casa-growth` | Growth | Experiment design, channel selection, funnel and CRO, traction loops |
-| `casa-marketer` | Growth | GTM, content, social, paid acquisition, SEO, creative |
+| `casa-product` | Product | MVP scoping, prioritization, roadmap, product specs |
+| `casa-engineer` | Engineering | Stack, deployment, observability, security baseline |
+| `casa-analyst` | Data | Event taxonomy, dashboards, north-star instrumentation |
+| `casa-growth` | Growth | Experiments, channel selection, funnel, traction loops |
+| `casa-marketer` | Growth | GTM, content, social, paid acquisition, SEO |
 | `casa-lifecycle` | Growth | Email and lifecycle, nurture, retention, win-back |
-| `casa-partnership` | Operations, Growth | Partnerships, integrations, business development, co-marketing |
-| `casa-sales` | Sales | Sales process, prospecting, pitch, pricing negotiation, deal management |
-| `casa-success` | Success | Onboarding, success playbooks, retention, expansion, health scoring |
-| `casa-finance` | Finance | Unit economics, runway, cap table, financial model, fundraising materials |
-| `casa-operator` | Operations, Legal | Hiring, legal and compliance roadmap, process design, vendor strategy |
+| `casa-partnership` | Operations, Growth | Partnerships, integrations, co-marketing |
+| `casa-sales` | Sales | Sales process, prospecting, pitch, deal management |
+| `casa-success` | Success | Onboarding, retention, expansion, health scoring |
+| `casa-finance` | Finance | Unit economics, runway, financial model, fundraising |
+| `casa-operator` | Operations, Legal | Hiring, compliance roadmap, process, vendors |
 
-**Advisors check it.** A standing panel of ten reviewers grades an operator's output and
-catches what it missed: `analyst-honesty` (numbers and vanity metrics), `investor-redteam`
-(the thesis), `customer-skeptic` (value prop and ICP fit), `brand-copy-critic` (the canon
-and tone), `designers-eye` (UI and accessibility), plus `plan-auditor`,
-`evidence-researcher`, `project-scanner`, `playbook-planner`, and `casa-learnings`. They run
-in parallel inside `/casa-review`.
+**Ten advisors keep the bar high.** A standing review panel (`/casa-review`) grades
+an operator's output in parallel and catches what it missed: honest-numbers,
+investor red-team, customer-skeptic, brand and copy, design, plan audit, evidence,
+and learnings personas. An operator drafts, the advisors grade, you address what
+matters, the engine advances.
 
-The split is the point: operators move fast and produce; advisors keep the bar high. An
-operator drafts, the advisors grade, you address what matters, the engine advances.
+## The work loop
 
-**Derived per company.** A B2B SaaS with a revenue constraint gets Sales, Finance, and
-Success operators with Finance and Sales leading. A consumer app with a user constraint gets
-Growth and Data with Growth leading. An on-chain project with a regulatory constraint pulls
-in the Legal operator as the lead. You can override the derived set.
+1. **`/casa` opens the session.** The front door. It reads the whole business from
+   durable state (no re-explaining), tells you in plain English where you are and
+   the one move it recommends and why, and asks before doing anything. `/casa-cos`
+   is the same brain under its formal name; `/casa-next` returns just the single
+   next action.
+2. **You dispatch the work.** Casa routes the move to the operator that owns it
+   through `/casa-build`, or fans it out with `/casa-parallel` when it splits. Each
+   action runs under your autonomy setting for its department.
+3. **Advisors check it.** `/casa-review` grades the artifact in parallel; you
+   address the findings that matter before it counts as done and the engine
+   advances to what is now unblocked. Work that needs a real-world step from you
+   (a signup, a payment, a decision) is parked as "Waiting on you" instead of
+   silently stalling.
+4. **Everything syncs.** Every worker, in every terminal, writes a thin line to a
+   shared append-only ledger, so a marketing terminal and an engineering terminal
+   stay one coherent picture and the next session knows what already happened.
 
-## How a work session runs
+### Going faster: parallel dispatch
 
-The day-to-day v4 loop:
-
-1. **The Chief of Staff opens the session (`/casa-cos`).** Re-instantiated every time, it
-   reads the whole business from durable state (no re-explaining) and gives you one
-   briefing: the single next move and which operator runs it, what is in flight across your
-   other terminals, what is blocked waiting on your approval, and whether two independent
-   lanes could run in parallel.
-2. **You dispatch the work.** The Chief of Staff routes the move to the operator that owns it
-   through `/casa-build`, or fans it out with `/casa-parallel` if it splits. Each action runs
-   under your autonomy setting for its department.
-3. **Advisors check it (`/casa-review`).** The relevant panel grades the artifact in
-   parallel; you address the P0 and P1 findings before it is marked done and the engine
-   advances to what is now unblocked.
-4. **Everything syncs.** Every worker, in every terminal, writes a thin line to a shared,
-   append-only ledger. That is how a marketing terminal and an engineering terminal stay one
-   coherent picture, and how the next session knows what already happened.
-
-### Going faster: parallel dispatch (`/casa-parallel`)
-
-When a task is big and breaks into independent pieces (a research sweep, a multi-file build,
-a multi-dimension audit, a content kit), `/casa-parallel` fans it out across subagents, then
-auto-merges and verifies the result. It is deliberate about when it does this: a planner only
-splits when the pieces are genuinely independent and each is large enough that the speedup
-beats the merge overhead, balances the chunks so the slowest does not cap you, and keeps any
-dependent step serial. For code, the merge step runs the real test suite (not each worker's
-mocked unit test), so a worker that drifted from the shared contract is caught. On a single
-account this is roughly 2 to 3x on the right tasks; more accounts raise the ceiling.
+When a task is big and breaks into independent pieces (a research sweep, a
+multi-file build, a content kit), `/casa-parallel` fans it out across subagents,
+then auto-merges and verifies the result. A planner only splits when the pieces
+are genuinely independent and large enough that the speedup beats the merge
+overhead, and the merge step runs the real test suite, so a worker that drifted
+from the shared contract is caught. On a single account this is roughly 2 to 3x
+on the right tasks.
 
 ### Staying in control: autonomy and approvals
 
-Each department has an autonomy dial: `auto` (reversible work runs without asking) or
-`approve_first` (Casa proposes and waits). On top of that sits an always-ask line that no
-dial can cross: spending money, going public, merging to main, or anything destructive always
-stops for you. When a worker hits that line it records the task as blocked and it joins your
-approvals queue; you clear the queue from your main terminal and the waiting worker, here or
-in another terminal, resumes.
-
-The deterministic engine still owns what is eligible, what depends on what, and what is gated,
-so an agent can never skip a gate, invent a dependency, or run out-of-order work. The agents
-reason and produce; the engine is the guardrail.
+Each department has an autonomy dial: `auto` (reversible work runs without asking)
+or `approve_first` (Casa proposes and waits). Above the dials sits an always-ask
+line that no setting can cross: spending money, going public, shipping code, or
+anything destructive always stops for you. Blocked actions join an approvals queue;
+`/casa-approvals` shows it, clears it, and changes the dials. The deterministic
+engine owns what is eligible, what depends on what, and what is gated, so an agent
+can never skip a gate or run out-of-order work.
 
 ## Commands
 
+Start here:
+
 | Command | What it does |
 |---|---|
-| `/casa-start` | Run the stage interview, then select, sequence, and seed your build map |
-| `/casa-priority` | Re-evaluate where the company is and get your ranked priorities for this session |
-| `/casa-board` | See your company as department lanes led by the binding constraint, then run a wave of parallel drafts |
-| `/casa-department <name>` | Focus a work session on one function (Engineering, Growth, Finance, ...) |
-| `/casa-cos` | The Chief of Staff: opens a session, tells you in plain English where you are and the one move it recommends and why, then asks before doing anything |
-| `/casa-parallel` | Fan a big independent task out across subagents, auto-merge, and verify the result with a real test run |
-| `/casa-next` | The always-on advisor: your single next best action |
-| `/casa-map` | Show and approve your personalized build map |
-| `/casa-loops` | Show and run recurring loops (pulse, retro, content, close) |
-| `/casa-pay` | Run paid actions (domains, hosting, media, research) through Capx Pay |
+| `/casa-start` | Set up the company: interview or project scan, then a personalized build map |
+| `/casa` | The front door: reads the whole business, proposes the next move, asks before acting |
+| `/casa-help` | One screen: where you are, the main commands, what to run now |
 
-### Craft and review
-
-These do the work and check it.
+Do the work:
 
 | Command | What it does |
 |---|---|
 | `/casa-build` | Execute a ready playbook to a finished artifact and advance the state |
-| `/casa-review` | Critique a decision, plan, or copy with a panel of specialist personas |
-| `/casa-write` | Draft founder-facing copy to the canon, enforced by a linter |
-| `/casa-design` | Build and verify product UI with production craft |
-| `/casa-synthesize` | Turn raw customer notes into a ranked insight memo |
+| `/casa-parallel` | Fan a big independent task out across subagents, auto-merge, verify with a real test run |
+| `/casa-board` | The company as department lanes led by the binding constraint, plus a wave of parallel drafts |
+| `/casa-department <name>` | Focus a session on one function (Engineering, Growth, Finance, ...) |
+
+Judgment:
+
+| Command | What it does |
+|---|---|
+| `/casa-cos` | The Chief of Staff briefing (the same brain as `/casa`) |
+| `/casa-next` | The single next best action, with the reasoning |
+| `/casa-priority` | Re-evaluate where the company is and rank this session's priorities |
+| `/casa-map` | Show and approve the personalized build map |
+| `/casa-review` | Critique a decision, plan, or artifact with a panel of specialist personas |
+| `/casa-validate` | Run Level 0 validation to a GO or KILL verdict on the idea |
 | `/casa-strategy` | Set and maintain the company strategy anchor |
 | `/casa-readout` | Read the company numbers honestly |
+
+Craft:
+
+| Command | What it does |
+|---|---|
+| `/casa-write` | Draft founder-facing copy to the canon, enforced by a linter |
+| `/casa-design` | Build and verify product UI with production craft |
+| `/casa-promote` | Draft launch and announcement copy |
+| `/casa-synthesize` | Turn raw customer notes into a ranked insight memo |
 | `/casa-ideate` | Generate, critique, and shortlist company moves |
 | `/casa-experiment` | Frame and log a disciplined experiment |
 | `/casa-compound` | Capture a lesson so the next run starts ahead |
 | `/casa-refresh` | Sweep the learning store for drift |
 | `/casa-pulse` | A time-windowed recap of the company |
-| `/casa-promote` | Draft launch and announcement copy |
+
+Control:
+
+| Command | What it does |
+|---|---|
+| `/casa-approvals` | See and clear the approvals queue; view and change autonomy dials |
+| `/casa-loops` | Show and run recurring loops (metrics, retro, content, close) |
+| `/casa-pay` | Run paid actions (domains, hosting, media) through Capx Pay |
+
+## Built to be trusted
+
+- **Zero runtime dependencies.** The engine imports only Node built-ins. A clone
+  is 2.6 MB and needs no `npm install` to run.
+- **173 tests, green in under a second**, on Node's built-in test runner. A
+  preflight validator (`npm run check`) verifies the whole plugin before anything
+  ships.
+- **The engine is deterministic where it counts.** Eligibility, dependencies,
+  gating, and every state mutation are plain code, so an agent can never skip a
+  gate or invent a dependency. The model reasons at the leaves.
+- **Nothing leaves your machine.** All state is plain-text files in
+  `company-brain/`, versioned in your own git. No telemetry, no hosted service,
+  no account.
+- **Subscription-safe by design.** Interactive use (you present for every action)
+  is within Anthropic's consumer terms. The optional headless operate mode
+  requires your own API key and explicit opt-in, and refuses to run otherwise.
 
 ## Getting started
 
-1. Make a new, empty project folder for your company and open it in Claude Code.
-2. Install the plugin:
+1. Make a new, empty project folder for your company and open it in Claude Code,
+   or open a project that already exists. Casa works for both.
+2. Install:
 
    ```
-   /plugin marketplace add https://github.com/957codes/casa-test-v4
+   /plugin marketplace add https://github.com/957codes/casa
    /plugin install capx-casa
    ```
 
-3. Set up your company. Casa works for a brand-new idea or a business already
-   running:
+3. Run `/casa-start`. For a new idea it infers most of the setup from your
+   one-liner, confirms it in one batch, and shows you a draft plan midway; the
+   whole thing is about 6 to 9 exchanges. For an existing business it scans the
+   project first and asks only what it cannot infer. A raw idea gets validated
+   before anything is built; a running business skips ahead, with unfinished
+   foundations surfaced as catch-up work.
+4. Every session after that, Casa greets you with your company, level, north star,
+   binding constraint, and next action. Run `/casa` to act on it.
 
-   ```
-   /casa-start
-   ```
-
-   It asks a short series of questions to learn what the business is and where it is
-   today, then builds a personalized map that starts at the right level. A raw idea
-   gets validated first; an existing business skips ahead, with anything you have not
-   done yet surfaced as catch-up work.
-
-4. Every time you reopen the project, Casa greets you with your binding constraint, the
-   department lanes leading on it, and your top priority. Run `/casa-board` to see the whole
-   company by department, `/casa-priority` to re-evaluate, or `/casa-next` to act.
-
-See `docs/ONBOARDING.md` for the full walkthrough.
+The full walkthrough is in [docs/ONBOARDING.md](docs/ONBOARDING.md).
 
 ## Updating Casa
 
-When a new version is pushed, refresh the marketplace, update the plugin, and reload
-it into your current session:
+When a new version is pushed, refresh the marketplace, update the plugin, and
+reload it into your current session:
 
 ```
 /plugin marketplace update capx-casa
@@ -238,19 +266,24 @@ it into your current session:
 /reload-plugins
 ```
 
-`/reload-plugins` activates the new skills and commands without restarting Claude Code.
-Notes:
+`/reload-plugins` activates the new skills and commands without restarting Claude
+Code. Notes:
 
-- The marketplace and the plugin are both named `capx-casa`. If `/plugin marketplace list`
-  shows it under a different alias, use that name in steps 1 and 2.
-- Casa is versioned by git commit, so every push counts as an update. If `/plugin update`
-  reports "already up to date" when you know there are new commits, run the marketplace
-  update first (it re-fetches the repo).
+- The marketplace and the plugin are both named `capx-casa`. If `/plugin
+  marketplace list` shows it under a different alias, use that name in steps 1
+  and 2.
+- Casa is versioned by git commit, so every push counts as an update. If
+  `/plugin update` reports "already up to date" when you know there are new
+  commits, run the marketplace update first (it re-fetches the repo).
 
-## How it works
+## Learn more
 
-Read `docs/ARCHITECTURE.md` for the design, `docs/BUILD-PLAN.md` for the full
-plan, and `CLAUDE.md` for the operating contract this repo runs under.
+- [docs/FAQ.md](docs/FAQ.md): cost, privacy, API keys, what Casa will and will
+  not do on its own.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): how the engine works, for
+  contributors.
+- [CONTRIBUTING.md](CONTRIBUTING.md): playbooks are the headline contribution;
+  skills, agents, and engine fixes are welcome too.
 
 ## License
 

@@ -15,26 +15,20 @@ full protocol in `docs/SELF-UPDATING-CLAUDE.md`.
 ## 1. What this repo is
 
 Capx Casa is an open-source (MIT) Claude Code plugin: the control plane for
-building and scaling a company from the terminal. It ships skills, subagents,
-hooks, recurring loops, and a router, all reading and writing a durable company
-brain so every action compounds.
+building and scaling a company from the terminal. It ships skills, subagents
+(specialist operators plus a review panel), hooks, recurring loops, a router, and an
+orchestration spine (Chief of Staff, parallel dispatch, autonomy dials, and a
+cross-terminal ledger), all reading and writing a durable company brain so every
+action compounds.
 
 Prime directives, in priority order:
 
-1. Terminal-first. The terminal is where work happens, and the company-brain is
-   mutated only by the deterministic engine. (2026-06-27 supersession of the original
-   "terminal only, no GUI" rule: a read-only local Console under console/ may VISUALIZE
-   the brain on localhost. It never writes to the brain, ships nothing hosted, needs no
-   login, and is never required. Its dependencies are exempt from the zero-dependency
-   guarantee, which still binds the plugin runtime in scripts/.)
-   (2026-06-28 amendment: the Console may be INTERACTIVE. The bridge (console/bridge.mjs)
-   may accept founder intents over localhost and append them to a request queue under
-   company-brain/console/ (queue.jsonl, messages.jsonl) -- request state OUTSIDE the brain
-   state files. It still never mutates build-map.json/state.json/profile.json: a click
-   either shells the deterministic scripts/brain.mjs (which remains the SOLE writer of brain
-   state) or queues a WORK intent that the founder's interactive Claude Code session drains
-   via the casa-serve skill. The bridge never spawns an agent or `claude -p` -- the executor
-   is always the present founder's interactive session (rule 5). The bridge stays zero-dep.)
+1. Terminal-first, and terminal-only. The terminal is where work happens; the
+   company-brain is mutated only by the deterministic engine (`scripts/brain.mjs` is the
+   SOLE writer of brain state). There is no GUI. (2026-06-29: the local visual Console
+   explored in v1 and v2 was removed in v4 because the terminal is enough; the 2026-06-27
+   and 2026-06-28 Console supersessions of this rule are now historical. Do not reintroduce
+   a hosted surface, a login, or any server that writes brain state.)
 2. The founder runs inside their own Claude Code on their own plan. Casa adds no
    hosted inference. Interactive use only on a subscription (see rule 5).
 3. MIT and open. Never paywall a skill, agent, prompt, or playbook. Casa earns no
@@ -48,11 +42,11 @@ Prime directives, in priority order:
    pulse-derived weights; the advisor makes the final call over the eligible set.) Never
    let the model invent a dependency, skip a gate, or recommend a blocked item.
 5. ToS line. Anthropic Consumer Terms section 3.7 prohibits automated or headless
-   use except via an Anthropic API key. So everything in v1 is interactive and
-   subscription-safe (the founder is present). Autonomous or scheduled "operate
-   mode" (headless claude -p, the Agent SDK, cron plus a persistent shell) is a
-   later phase and runs only on the founder's own API key, never a subscription.
-   Never market or build v1 as a 24/7 autonomous operator.
+   use except via an Anthropic API key. So the default interactive tier is
+   subscription-safe (the founder is present for every action). Autonomous or scheduled
+   "operate mode" (headless claude -p, the Agent SDK, cron plus a persistent shell) is a
+   later phase and runs only on the founder's own API key, never a subscription. Never
+   market or build the interactive tier as a 24/7 autonomous operator.
 6. Integrate, do not vendor. We are MIT. Reach external tools (PostHog, Onyx,
    Chatwoot, crawl4ai, billing, etc.) via MCP or REST against the founder's own
    or self-hosted instance. Never bundle AGPL, SSPL, or Sustainable-Use-License
@@ -75,32 +69,41 @@ attestation that feeds tokenization). Do not break that bridge.
 
 ---
 
-## 2. Architecture (six layers)
+## 2. Architecture (the layers)
 
 Full detail in `docs/ARCHITECTURE.md`. In short:
 
 1. Plugin shell: `.claude-plugin/plugin.json` plus `.claude-plugin/marketplace.json`.
-2. Router (the brain): select then sequence then recommend then adapt.
-   `agents/playbook-planner.md` (select plus sequence), `skills/casa-next`
-   (recommend), `hooks/session-start.sh` (surface).
+2. Router (the brain): select then sequence then recommend then adapt. The
+   deterministic core is `scripts/router.mjs` (+ `northstar.mjs`, `stage.mjs`);
+   `agents/playbook-planner.md` (select plus sequence), `skills/casa-next` and
+   `skills/casa-priority` (recommend), `hooks/session-start.sh` (surface).
 3. Skills: one per founder job, ported from the playbook library. `skills/`.
-4. Subagents: specialist personas and reviewers. `agents/`.
-5. Loop engine: recurring cadences. (Manifest format and runtime land in Phase 2;
-   see the build plan.)
-6. Company brain: durable git-tracked markdown state. Template in
-   `templates/company-brain/`.
+4. Subagents: 14 specialist operators that DO the department work, plus a standing
+   panel of 10 advisor reviewers that check it (`/casa-review`). `agents/`.
+5. Loop engine (landed): recurring cadences. `templates/company-brain/loops.json`
+   defines them; `brain.mjs` surfaces due loops and `skills/casa-loops` runs them in the
+   interactive tier. Headless operate mode (`scripts/operate.mjs`) is ToS-gated to the
+   founder's own API key.
+6. Orchestration spine (v4): a Chief of Staff (`scripts/cos.mjs` + `skills/casa-cos`)
+   that routes each session's next move, parallel dispatch (`scripts/planner.mjs` +
+   `dispatch.mjs` + `verify.mjs` + `skills/casa-parallel`), per-department autonomy dials
+   and an approvals queue (`scripts/gates.mjs` + `approvals.mjs`), and a cross-terminal
+   ledger (`scripts/ledger.mjs`) so work in any terminal becomes shared context.
+7. Company brain: durable git-tracked markdown + JSON state. Template in
+   `templates/company-brain/`. The deterministic engine (`brain.mjs`) is the sole writer.
 
 ---
 
-## 3. The playbook library and the level model
+## 3. The playbook library, departments, and the level model
 
-The curriculum is 100 playbooks. The source drafts live OUTSIDE this repo at
+The curriculum is 169 playbooks. The source drafts live OUTSIDE this repo at
 `../capx-ai/playbooks/playbooks-output/` with a hand-authored DAG at
 `../capx-ai/playbooks/flows/` (level model, `dependencies.md`, `parallelism.md`).
 That DAG is the v0 of the router. We port playbooks into this repo under
 `playbooks/level-N/` with the machine-readable frontmatter contract.
 
-The level model (organizing scheme, used as-is for now):
+The level model (the internal readiness gate; playbooks live under `playbooks/level-N/`):
 
 - Always-on: Foundations (HITL gates plus cost governance)
 - Level 0: Ideation and Validation (the wedge)
@@ -118,6 +121,13 @@ WHICH playbooks fire inside each level for the business type. Never run a
 playbook before its level (the prerequisites do not exist and the output is
 garbage).
 
+Each play also carries a DEPARTMENT (one of eleven: Strategy, Brand, Product,
+Engineering, Data, Growth, Sales, Success, Finance, Legal, Operations) and a
+CRITICALITY (existential | core | growth | optional). The founder-facing surface is the
+department (a lens over the one constraint-first global ranking, never its own ranker);
+the level stays the INTERNAL gate for when a play becomes ready. Full frontmatter contract
+in `docs/PLAYBOOK-SCHEMA.md`.
+
 ---
 
 ## 4. How to add things (conventions)
@@ -133,8 +143,8 @@ garbage).
   optional `model`. Agents return structured output, not prose.
 - Add a hook: register it in `hooks/hooks.json`. Hooks are deterministic scripts.
   Keep them dependency-free where possible (POSIX sh, no jq requirement).
-- Add a loop: (Phase 2) declare it in the loop manifest. Label its ToS tier
-  (interactive v1 vs API-backed operate mode).
+- Add a loop: declare it in `templates/company-brain/loops.json`. Label its ToS tier
+  (interactive tier vs API-backed operate mode).
 
 ---
 
@@ -429,10 +439,39 @@ short, date entries, never delete the protocol).
   multi-account fan-out; mirrors operate.mjs rule 5 - API key + CASA_OPERATE, never a subscription). (5) Packaging:
   this entry + plugin.json/marketplace/README refreshed (homepage off the stale casa-test-v1). The
   Conductor-style tabbed terminal app is a later shell on the same plugin, not built.
-- Next: confirm the OSS repo URL (homepage is a placeholder) and publish; live founder dogfood of the full
-  casa-cos -> casa-build/casa-parallel -> casa-review loop; then the tabbed app.
+- Next: live founder dogfood of the full /casa -> casa-build/casa-parallel -> casa-review loop;
+  a recorded demo GIF; then the tabbed app. (2026-07-01: repo URL confirmed and published as
+  957codes/casa; see the launch-hardening entry below.)
 - Console removed from v4 (2026-06-29): per founder feedback the terminal is enough, so the
   visual Console was deleted (console/, skills/casa-console, skills/casa-serve, tests/adapter.test.mjs).
   The runtime never depended on it; casa-review grade mode now writes company-brain/scores.jsonl
   (was console/scores.jsonl). The Console supersessions in rule 1 above are now historical.
+- Launch hardening from the first full user-perspective review (2026-07-01). Repo RENAMED to
+  957codes/casa (casa-test-v1/v2 archived with superseded notices; all URLs, manifests, and docs
+  updated). Engine fixes: cos-context.mjs reads the binding constraint from state.json (the CoS was
+  blind to it); stage.mjs validates type against the CANONICAL_TYPES 8 (an audience word like "b2b"
+  no longer silently mis-derives the north star), accepts Core-less answers for the mid-interview
+  draft-map preview, gives friendly errors with suggestions, seeds revenue-model-selection done when
+  live revenue proves it, and stamps loop cadences at onboarding (no day-one pileup); brain.mjs
+  gained waiting/unwait (a founder-action park with a "Waiting on you" NOW.md section), a
+  do-or-die-constraint line in NOW.md, an artifact-honesty nudge on complete, and complete clears a
+  play's waiting flag; gates.mjs gained `dial <brainDir> <Department> <auto|approve_first>`;
+  router.mjs and cos-context/wave fail loud with usage instead of stack traces or fabricated state.
+  Command surface 24 -> 27 skills: NEW /casa (the single front door, alias of the casa-cos flow; the
+  hook, README, and casa-start all point at it), /casa-help (one-screen orientation), /casa-approvals
+  (queue + dials in founder language); level-0-validate RENAMED casa-validate; casa-start greenfield
+  interview cut to ~6-9 interactions (batch inference from the one-liner + a draft-plan preview);
+  casa-build gained glob-corrected playbook paths, the outputs/<id>/ artifact contract, and the
+  waiting step; every company skill got a missing-brain guard; jargon swept from founder-visible
+  text. Agents 24 -> 26: legal-risk and tokenomics-critic advisors created (casa-review referenced
+  them but they did not exist). Catalog: internal source: paths stripped from all 99 playbooks plus
+  40 dangling footers. NEW examples/inboxpilot (a full committed engine-generated company brain with
+  one real graded artifact) and examples/README.md. Docs: README overhauled (badges, 60-second
+  start, session transcript, trust section, grouped 27-command table), ONBOARDING rewritten for v4
+  (the stale casa-test-v1 install URL was silently installing a dead plugin), ARCHITECTURE rewritten
+  to v4, NEW FAQ.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, .github/ (CI on Node 20+22, issue and PR
+  templates); BUILD-PLAN moved to docs/history/ with the Gateway margin passage removed. Suite 159
+  -> 173 tests (tests/launch-fixes.test.mjs), preflight 72 checks, all green; npm test glob made
+  Node-20-safe. Remaining: a recorded demo GIF (vhs tape) and the GitHub social-preview image (web
+  UI only).
 <!-- /CASA:AUTO:repo-status -->
