@@ -38,7 +38,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: first-pipeline
-source: ../capx-ai/playbooks/playbooks-output/085-discovery-call-framework.md
 ---
 # Discovery Call Framework
 

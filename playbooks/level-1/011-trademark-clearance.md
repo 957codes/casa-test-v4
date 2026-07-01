@@ -28,7 +28,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: company-exists
-source: ../capx-ai/playbooks/playbooks-output/011-trademark-clearance.md
 ---
 # Trademark Clearance
 
@@ -60,6 +59,3 @@ filing waits on the goods and services description from brand positioning (015).
   (human gate). High-risk marks are not filed without explicit sign-off.
 - Knockout clearance can run at L1; the full multi-class filing needs the goods
   and services description from positioning (015).
-
-The full source draft (Abercrombie spectrum, DuPont factors, filing mechanics) is
-at the path in the `source` field above.

@@ -33,7 +33,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: backups-verified
-source: ../capx-ai/playbooks/playbooks-output/030-data-backup-recovery.md
 ---
 # Data Backup & Recovery
 
@@ -67,6 +66,3 @@ Feeds incident-response (028) restore scenarios.
 - One immutable or air-gapped copy is the ransomware backstop. It must be
   un-deletable even by a full-admin attacker.
 - A backup not proven restorable is treated as no backup.
-
-The full source draft (tier SLAs, WAL config, DR pattern detail) is at the path in
-the `source` field above.

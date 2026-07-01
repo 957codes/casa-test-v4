@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: pmf-confirmed
-source: ../capx-ai/playbooks/playbooks-output/094-growth-loop-design.md
 ---
 # Growth Loop Design
 

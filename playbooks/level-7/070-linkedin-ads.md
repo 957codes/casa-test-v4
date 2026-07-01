@@ -37,7 +37,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: enterprise-pipeline-live
-source: ../capx-ai/playbooks/playbooks-output/070-linkedin-ads.md
 ---
 # LinkedIn Ads
 

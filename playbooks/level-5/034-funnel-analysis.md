@@ -43,7 +43,6 @@ deliverable:
     - Top two testable hypotheses with control/variant, MDE, and sample size
   max_words: 900
 rubric: Passes only when drop-offs are statistically significant and cross-referenced against the deploy and campaign schedule before being called bottlenecks, bottlenecks are prioritized with RICE, and the top two are handed off as testable hypotheses with a defined MDE and sample size rather than peeked at early.
-source: ../capx-ai/playbooks/playbooks-output/034-funnel-analysis.md
 ---
 # Funnel Analysis
 
@@ -77,7 +76,3 @@ and the Weekly Business Review (040).
   least two business cycles for day-of-week seasonality.
 - An anomaly that lines up with a known deploy or campaign is expected, not a
   bottleneck.
-
-The full source draft (activation examples, statistical detail) is at the path in
-the `source` field above. Note: the source body repeats a block; do not copy the
-repetition.

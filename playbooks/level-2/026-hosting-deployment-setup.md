@@ -44,7 +44,6 @@ deliverable:
     - Health checks and logging
   max_words: 800
 rubric: Passes only when the hosting choice is justified against traffic, budget, and cost-predictability as a first-class criterion, the CI/CD pipeline runs lint, test, build, and deploy with no secret hardcoded in the repo or pipeline, and any ongoing-spend provisioning is escalated to the founder.
-source: ../capx-ai/playbooks/playbooks-output/026-hosting-deployment-setup.md
 ---
 # Hosting & Deployment Setup
 
@@ -75,5 +74,3 @@ written to the company brain. Unblocks observability (027), security baseline
 - Cost-predictability is a first-class selection criterion, not an afterthought.
 - Provisioning that incurs ongoing spend escalates to the founder per the HITL
   gates before commitment.
-
-The full source draft is at the path in the `source` field above.

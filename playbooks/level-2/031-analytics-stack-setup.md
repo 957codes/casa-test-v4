@@ -37,7 +37,6 @@ deliverable:
     - Privacy and consent built in
   max_words: 900
 rubric: Passes only when every user action is captured once at the source and routed from a single canonical stream with no tool storing its own copy, every metric has exactly one authoritative definition in version control, and privacy and consent are built in from day one rather than retrofitted.
-source: ../capx-ai/playbooks/playbooks-output/031-analytics-stack-setup.md
 ---
 # Analytics Stack Setup
 
@@ -74,6 +73,3 @@ reading (038), Mixpanel reading (039), and WBR (040).
 - Every metric has exactly one definition, in code, version-controlled.
 - Mature variant (Path B): when MAU exceeds ~10k or the team grows past 5
   reporters, escalate to a warehouse-native architecture; do not create a new file.
-
-The full source draft (path detail, governance, QA, failure modes) is at the path
-in the `source` field above. Condense, do not pad.

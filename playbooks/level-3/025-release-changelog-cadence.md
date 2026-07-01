@@ -34,7 +34,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: release-rhythm-set
-source: ../capx-ai/playbooks/playbooks-output/025-release-changelog-cadence.md
 ---
 # Release & Changelog Cadence
 
@@ -68,5 +67,3 @@ ongoing public record), maintained in the company brain.
 - Communicate releases, never deploys. Non-user-facing merges get no changelog
   entry unless they materially change performance or reliability.
 - Zero unannounced breaking changes.
-
-The full source draft is at the path in the `source` field above.

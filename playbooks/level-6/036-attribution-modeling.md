@@ -33,7 +33,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: attribution-operating
-source: ../capx-ai/playbooks/playbooks-output/036-attribution-modeling.md
 ---
 # Attribution Modeling
 
@@ -68,6 +67,3 @@ WBR (040).
 - Ground budget decisions in attribution data, never platform-reported ROAS alone.
 - Budget reallocations above the discretionary threshold escalate to the founder
   per the human-in-the-loop gates.
-
-The full source draft (model taxonomy, MTA/MMM/incrementality, decision framework)
-is at the path in the `source` field above.

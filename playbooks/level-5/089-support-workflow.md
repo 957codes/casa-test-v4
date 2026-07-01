@@ -33,7 +33,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: first-customers
-source: ../capx-ai/playbooks/playbooks-output/089-support-workflow.md
 ---
 # Support Workflow
 

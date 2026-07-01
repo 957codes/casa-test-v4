@@ -31,7 +31,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: channels-compounding
-source: ../capx-ai/playbooks/playbooks-output/053-community-seeding.md
 ---
 # Community Seeding
 

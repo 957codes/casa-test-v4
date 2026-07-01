@@ -32,7 +32,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: launch-assets-ready
-source: ../capx-ai/playbooks/playbooks-output/043-pricing-page-copy-layout.md
 ---
 # Pricing Page Copy & Layout
 

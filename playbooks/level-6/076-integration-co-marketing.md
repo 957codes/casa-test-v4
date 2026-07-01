@@ -30,7 +30,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: partner-channel-live
-source: ../capx-ai/playbooks/playbooks-output/076-integration-co-marketing.md
 ---
 # Integration & Co-marketing
 

@@ -30,7 +30,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: lifecycle-live
-source: ../capx-ai/playbooks/playbooks-output/079-nurture-campaign.md
 ---
 # Nurture Campaign
 

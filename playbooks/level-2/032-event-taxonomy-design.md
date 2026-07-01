@@ -29,7 +29,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: taxonomy-governed
-source: ../capx-ai/playbooks/playbooks-output/032-event-taxonomy-design.md
 ---
 # Event Taxonomy Design
 
@@ -66,6 +65,3 @@ Feeds funnel (034), cohort (035), Mixpanel reading (039), and attribution (036).
 - Names are for business users, not engineers. Translation-required names fail.
 - Mature variant: re-audit naming and schema when event count crosses 100 then 500;
   do not duplicate this file.
-
-The full source draft (naming spec, property schema, enforcement, case studies) is
-at the path in the `source` field above.

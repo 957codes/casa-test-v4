@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: mixpanel-read-operating
-source: ../capx-ai/playbooks/playbooks-output/039-mixpanel-reading-playbook.md
 ---
 # Mixpanel Reading Playbook
 
@@ -65,6 +64,3 @@ weekly full run (Monday 09:00 UTC) plus on-demand on alerts, feature post-mortem
 - Run data integrity (Phase 1) before any funnel or retention read; a breaking
   deploy triggers an immediate Phase 1-only check.
 - Output structured decisions, not prose. Downstream agents consume it literally.
-
-The full source draft (phase detail, JQL patterns, MCP server, templates) is at the
-path in the `source` field above.

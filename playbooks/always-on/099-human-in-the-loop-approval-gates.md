@@ -25,7 +25,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: foundations-installed
-source: ../capx-ai/playbooks/playbooks-output/099-human-in-the-loop-approval-gates.md
 ---
 # Human-in-the-Loop Approval Gates
 

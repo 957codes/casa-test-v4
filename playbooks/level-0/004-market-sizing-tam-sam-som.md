@@ -38,7 +38,6 @@ deliverable:
     - Go/no-go recommendation
   max_words: 800
 rubric: Passes only when TAM, SAM, and SOM are computed by at least two independent methods (top-down and bottom-up) that agree within roughly 3x, every qualitative claim is replaced by a number with a source and a calculation, and a go/no-go is issued against VC-grade thresholds.
-source: ../capx-ai/playbooks/playbooks-output/004-market-sizing-tam-sam-som.md
 ---
 # Market Sizing (TAM/SAM/SOM)
 
@@ -69,6 +68,3 @@ product out; a bad market sinks a brilliant one.
 - Flag any assumption older than two years or sourced from a single analyst report.
 - A bottom-up and top-down number that disagree by more than ~3x is unresolved;
   do not pick the bigger one.
-
-The full source draft (three methodologies, decision tree, case studies) is at the
-path in the `source` field above.

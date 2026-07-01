@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: lifecycle-live
-source: ../capx-ai/playbooks/playbooks-output/080-win-back-campaign.md
 ---
 # Win-back Campaign
 

@@ -31,7 +31,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: scaled-organic
-source: ../capx-ai/playbooks/playbooks-output/058-programmatic-seo.md
 ---
 # Programmatic SEO
 

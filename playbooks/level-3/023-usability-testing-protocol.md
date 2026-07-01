@@ -32,7 +32,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: usability-validated
-source: ../capx-ai/playbooks/playbooks-output/023-usability-testing-protocol.md
 ---
 # Usability Testing Protocol
 
@@ -64,5 +63,3 @@ the company brain. Feeds feature prioritization and the build loop.
 - Fixing a usability problem costs far more after launch than during design. Test
   early and often.
 - For attitudinal questions, use an interview playbook instead.
-
-The full source draft is at the path in the `source` field above.

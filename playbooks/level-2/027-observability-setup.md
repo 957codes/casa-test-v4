@@ -33,7 +33,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: app-observable
-source: ../capx-ai/playbooks/playbooks-output/027-observability-setup.md
 ---
 # Observability Setup
 
@@ -66,6 +65,3 @@ release cadence (025).
   constraint forces it; it does not correlate for autonomous diagnosis.
 - A slow error is worse than a fast error. Track failed-request latency separately.
 - At least one alert must demonstrably fire before this is done.
-
-The full source draft (Golden Signals, RED/USE, SLO math, vendor notes) is at the
-path in the `source` field above. Condense, do not pad.

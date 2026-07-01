@@ -27,7 +27,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: content-foundation
-source: ../capx-ai/playbooks/playbooks-output/054-seo-keyword-research.md
 ---
 # SEO Keyword Research
 

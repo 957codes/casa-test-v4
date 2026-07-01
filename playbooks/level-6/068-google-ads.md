@@ -33,7 +33,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: paid-channel-live
-source: ../capx-ai/playbooks/playbooks-output/068-google-ads.md
 ---
 # Google Ads
 

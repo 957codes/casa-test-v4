@@ -38,7 +38,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: pmf-confirmed
-source: ../capx-ai/playbooks/playbooks-output/095-pricing-packaging-experimentation.md
 ---
 # Pricing and Packaging Experimentation
 

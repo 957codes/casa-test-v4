@@ -41,7 +41,6 @@ deliverable:
     - Go/No-Go/Pivot decision
   max_words: 1200
 rubric: Passes only when every load-bearing assumption carries disconfirming evidence and a confidence rating, the kill criteria are numeric and pre-committed rather than vague, and the thesis survives its own pre-mortem to earn a defensible Go call.
-source: ../capx-ai/playbooks/playbooks-output/006-red-team-thesis.md
 ---
 # Red-Team the Thesis
 
@@ -73,6 +72,3 @@ enter Level 1 and consumed by MVP scoping (018).
 - A thesis that cannot survive its own pre-mortem is a No-Go, not a "needs more
   optimism."
 - This is the L0 exit gate alongside 018; do not advance to L1 without it.
-
-The full source draft (pre-mortem, adversarial tradition, kill-criteria templates)
-is at the path in the `source` field above.

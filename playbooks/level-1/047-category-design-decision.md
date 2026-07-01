@@ -30,7 +30,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: positioning-locked
-source: ../capx-ai/playbooks/playbooks-output/047-category-design-decision.md
 ---
 # Category Design Decision
 

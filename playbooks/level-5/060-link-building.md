@@ -30,7 +30,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: scaled-organic
-source: ../capx-ai/playbooks/playbooks-output/060-link-building.md
 ---
 # Link Building
 

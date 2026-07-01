@@ -27,7 +27,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: company-exists
-source: ../capx-ai/playbooks/playbooks-output/010-domain-acquisition.md
 ---
 # Domain Acquisition
 
@@ -58,6 +57,3 @@ Feeds hosting (026) and email deliverability (082).
   (human gate); never wire funds outside escrow.
 - Do not accept a non-.com as permanent for a B2C brand; record the .com as a
   funded upgrade target.
-
-The full source draft (broker tactics, negotiation literature, transfer security)
-is at the path in the `source` field above.

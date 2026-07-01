@@ -27,7 +27,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: validated-opportunity
-source: ../capx-ai/playbooks/playbooks-output/005-jobs-to-be-done-extraction.md
 ---
 # Jobs-to-be-Done Extraction
 
@@ -56,6 +55,3 @@ written to the company brain. Feeds positioning, roadmap, and competitive analys
 - A job is not valid without verbatim evidence; no inferred jobs.
 - Functional-only matrices miss the strongest purchase drivers. Always capture
   emotional and social layers.
-
-The full source draft (two JTBD schools, switch interview protocol, review mining)
-is at the path in the `source` field above.

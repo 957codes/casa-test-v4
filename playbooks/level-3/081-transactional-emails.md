@@ -28,7 +28,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: transactional-email-live
-source: ../capx-ai/playbooks/playbooks-output/081-transactional-emails.md
 ---
 # Transactional Emails
 

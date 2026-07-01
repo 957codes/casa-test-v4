@@ -32,7 +32,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: launch-executed
-source: ../capx-ai/playbooks/playbooks-output/093-ab-testing-protocol.md
 ---
 # A/B Testing Protocol
 

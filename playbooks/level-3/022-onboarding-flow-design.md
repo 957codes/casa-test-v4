@@ -45,7 +45,6 @@ deliverable:
     - Instrumented activation event
   max_words: 700
 rubric: Passes only when the flow is oriented around the user's desired outcome rather than the feature list, each single-step drop-off is held at or below 30 percent, and the activation event is instrumented against targets of activation at or above 30 percent within 7 days and week-1 retention at or above 40 percent.
-source: ../capx-ai/playbooks/playbooks-output/022-onboarding-flow-design.md
 ---
 # Onboarding Flow Design
 
@@ -76,5 +75,3 @@ program management (024).
 - Orient the flow around the user's outcome, never the product's feature list.
 - A first-run that does not deliver perceived value before cognitive load loses the
   user; you never get a second first impression.
-
-The full source draft is at the path in the `source` field above.

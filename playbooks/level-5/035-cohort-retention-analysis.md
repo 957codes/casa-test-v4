@@ -45,7 +45,6 @@ deliverable:
     - Shifts attributed to interventions
   max_words: 900
 rubric: Passes only when the critical event is the value action chosen by retention-delta analysis rather than a generic login proxy, the retention metric type matches the usage pattern, and every curve shift is attributed to a specific intervention or external event via the intervention log.
-source: ../capx-ai/playbooks/playbooks-output/035-cohort-retention-analysis.md
 ---
 # Cohort & Retention Analysis
 
@@ -81,6 +80,3 @@ cohort divergence, or Quick-Ratio alerts. Feeds the CEO dashboard (037) and WBR
   value action, chosen by retention-delta analysis.
 - Modest churn compounds brutally (2%/mo to ~22%/yr); treat retention as the
   highest-leverage lever.
-
-The full source draft (metric taxonomy, SQL templates, benchmarks) is at the path
-in the `source` field above.

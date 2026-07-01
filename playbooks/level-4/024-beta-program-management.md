@@ -37,7 +37,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: beta-graduated
-source: ../capx-ai/playbooks/playbooks-output/024-beta-program-management.md
 ---
 # Beta Program Management
 
@@ -69,5 +68,3 @@ release motion.
 - A beta is not QA. Bug reports are a byproduct; PMF validation is the goal.
 - The beta legal docs require human legal review and founder approval before any
   recruitment begins.
-
-The full source draft is at the path in the `source` field above.

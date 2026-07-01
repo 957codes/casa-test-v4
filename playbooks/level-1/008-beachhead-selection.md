@@ -33,7 +33,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: company-exists
-source: ../capx-ai/playbooks/playbooks-output/008-beachhead-selection.md
 ---
 # Beachhead Selection
 
@@ -61,6 +60,3 @@ and naming (009).
 
 - One beachhead. Concentrate force; a diffuse go-to-market loses to a focused one.
 - Do not skip the lead pin. The expansion sequence must be ordered, not a wishlist.
-
-The full source draft (Crossing the Chasm, atomic network, Aulet conditions) is at
-the path in the `source` field above.

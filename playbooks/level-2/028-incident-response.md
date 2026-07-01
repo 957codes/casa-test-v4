@@ -34,7 +34,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: incident-process-live
-source: ../capx-ai/playbooks/playbooks-output/028-incident-response.md
 ---
 # Incident Response
 
@@ -70,6 +69,3 @@ open postmortem action items.
 - Customer-facing status statements and any risky remediation escalate to the
   founder per the human-in-the-loop gates.
 - Blameless always. Hindsight bias makes past decisions look obvious; resist it.
-
-The full source draft (severity thresholds, ICS detail, lifecycle state machine)
-is at the path in the `source` field above.

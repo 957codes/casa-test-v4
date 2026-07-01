@@ -28,7 +28,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: brand-shipped
-source: ../capx-ai/playbooks/playbooks-output/016-visual-identity-brief.md
 ---
 # Visual Identity Brief
 
@@ -61,5 +60,3 @@ guidelines post-PMF), written to the company brain.
 
 - Do not build the full identity pre-PMF; a rebrand will happen anyway. Use the MVB.
 - Halt on a strategy-audience archetype conflict and request human resolution.
-
-The full source draft is at the path in the `source` field above.

@@ -42,7 +42,6 @@ deliverable:
     - SOC 2-ready evidence
   max_words: 1000
 rubric: Passes only when secret hygiene is treated as the top control with no human access to production Tier 0/1 secrets and immediate rotation on compromise, public endpoints are rate-limited and validate input, and agent tools are scoped to least privilege.
-source: ../capx-ai/playbooks/playbooks-output/029-security-baseline.md
 ---
 # Security Baseline
 
@@ -80,6 +79,3 @@ company brain. Enhances incident-response (028) coverage for security events.
 - Rotate immediately on any suspected compromise or personnel change; a secret in
   a public repo is a P0.
 - This is a baseline, not a pen test. Physical security and APTs are out of scope.
-
-The full source draft (decision trees, secrets matrix, agent-security detail) is
-at the path in the `source` field above.

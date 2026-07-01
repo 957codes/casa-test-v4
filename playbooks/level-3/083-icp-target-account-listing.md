@@ -38,7 +38,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: gtm-foundation
-source: ../capx-ai/playbooks/playbooks-output/083-icp-target-account-listing.md
 ---
 # ICP & Target Account Listing
 

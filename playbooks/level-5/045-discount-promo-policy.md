@@ -30,7 +30,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: revenue-engine-tuned
-source: ../capx-ai/playbooks/playbooks-output/045-discount-promo-policy.md
 ---
 # Discount & Promo Policy
 

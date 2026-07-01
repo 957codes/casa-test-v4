@@ -35,7 +35,6 @@ deliverable:
     - Ranked niches with a confidence tag per claim
   max_words: 1000
 rubric: Passes only when each surfaced opportunity is supported by at least three independent signals from at least two channels rather than a single anecdote, candidates are scored on urgency, willingness to pay, reachability, and crowding, and every claim carries a confidence tag with any unavailable source stated.
-source: ../capx-ai/playbooks/playbooks-output/001-opportunity-scan.md
 ---
 # Opportunity Scan
 
@@ -66,6 +65,3 @@ company brain.
   least two channels support it. One complaint is an anecdote.
 - Tag confidence on every claim. No fabrication; if a data source is unavailable,
   say so and ask the founder.
-
-The full source draft (deeper method, citations, scoring rubric) is at the path in
-the `source` field above. Condense, do not pad.

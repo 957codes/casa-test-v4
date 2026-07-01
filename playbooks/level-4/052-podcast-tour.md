@@ -30,7 +30,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: channels-compounding
-source: ../capx-ai/playbooks/playbooks-output/052-podcast-tour.md
 ---
 # Podcast Tour
 

@@ -42,7 +42,6 @@ deliverable:
     - Instrumentation plan
   max_words: 700
 rubric: Passes only when the metric is a single value-denominated number that passes all five checklist criteria, decomposes into 3-4 MECE input metrics via a metric tree, and is protected by guardrail counter-metrics; before PMF it must anchor on retention or core-action completion rather than growth.
-source: ../capx-ai/playbooks/playbooks-output/033-north-star-metric.md
 ---
 # North Star Metric Definition
 
@@ -74,6 +73,3 @@ funnel (034), cohort (035), and the Weekly Business Review (040).
 - Never define a scaling NSM before PMF; you will scale a leaky bucket.
 - The NSM must pass all five checklist criteria, and a backtest should show a ~10%
   NSM lift correlating with a >5% retention or revenue lift within a defined lag.
-
-The full source draft (DHM model, checklist detail, metric-tree math) is at the
-path in the `source` field above.

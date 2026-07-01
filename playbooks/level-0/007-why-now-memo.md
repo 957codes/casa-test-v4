@@ -28,7 +28,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: validated-opportunity
-source: ../capx-ai/playbooks/playbooks-output/007-why-now-memo.md
 ---
 # Why-Now Memo
 
@@ -56,6 +55,3 @@ win by riding inflections, not by being marginally better.
 
 - Every timing claim cites a dated, verifiable fact. "AI is hot" is not a why-now.
 - Name the closing window explicitly; if there is none, the urgency is fabricated.
-
-The full source draft (inflection theory, the five types, narrative craft) is at
-the path in the `source` field above.

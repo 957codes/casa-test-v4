@@ -32,7 +32,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: audience-channels-live
-source: ../capx-ai/playbooks/playbooks-output/063-tiktok-growth.md
 ---
 # TikTok Growth
 

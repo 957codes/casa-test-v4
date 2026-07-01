@@ -26,7 +26,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: email-warmed
-source: ../capx-ai/playbooks/playbooks-output/082-email-deliverability-setup.md
 ---
 # Email Deliverability Setup
 

@@ -35,7 +35,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: round-closed
-source: ../capx-ai/playbooks/playbooks-output/098-fundraise-deck-investor-outreach.md
 ---
 # Fundraise Deck and Investor Outreach
 

@@ -27,7 +27,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: voice-locked
-source: ../capx-ai/playbooks/playbooks-output/017-tone-of-voice-guide.md
 ---
 # Tone of Voice Guide
 
@@ -58,5 +57,3 @@ content-producing playbooks.
 - Every rule needs a verifiable condition and a concrete do/don't example.
 - Banned in all copy: em-dashes and emojis. Tone is institutional and
   category-creating, never founder-bro.
-
-The full source draft is at the path in the `source` field above.

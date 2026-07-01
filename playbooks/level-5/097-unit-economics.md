@@ -41,7 +41,6 @@ deliverable:
     - Payback and LTV-to-CAC by cohort and channel
   max_words: 900
 rubric: Passes only when CAC is paid-only, fully loaded, and time-lagged (never blended) for scaling decisions, LTV is realized over a capped horizon rather than an infinite-horizon projection, and every number is segmented by cohort and channel rather than blended into an average that hides failing channels.
-source: ../capx-ai/playbooks/playbooks-output/097-unit-economics.md
 ---
 # Unit Economics
 

@@ -38,7 +38,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: first-pipeline
-source: ../capx-ai/playbooks/playbooks-output/084-outbound-email-sequences.md
 ---
 # Outbound Email Sequences
 

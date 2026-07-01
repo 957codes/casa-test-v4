@@ -31,7 +31,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: partner-channel-live
-source: ../capx-ai/playbooks/playbooks-output/074-affiliate-program-setup.md
 ---
 # Affiliate Program Setup
 

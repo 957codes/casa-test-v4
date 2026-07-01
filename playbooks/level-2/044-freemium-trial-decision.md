@@ -36,7 +36,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: pricing-direction-set
-source: ../capx-ai/playbooks/playbooks-output/044-freemium-trial-decision.md
 ---
 # Freemium / Trial Decision
 

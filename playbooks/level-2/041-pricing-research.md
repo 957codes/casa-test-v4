@@ -43,7 +43,6 @@ deliverable:
     - Synthesized price range and value metric with confidence tags
   max_words: 1200
 rubric: Passes only when the price range is triangulated across multiple complementary methods rather than a single survey, competitor benchmarking sets the band tested, and every number carries a confidence tag with any unavailable data source stated.
-source: ../capx-ai/playbooks/playbooks-output/041-pricing-research.md
 ---
 # Pricing Research
 

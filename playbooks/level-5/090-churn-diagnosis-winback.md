@@ -46,7 +46,6 @@ deliverable:
     - Win-back tailored to reason and timing
   max_words: 900
 rubric: Passes only when every churn event is traced to a root cause before any intervention, involuntary failed-payment churn is recovered as the highest-ROI lever, and win-backs are tailored to the churn reason and timing rather than reusing one template across all churn.
-source: ../capx-ai/playbooks/playbooks-output/090-churn-diagnosis-winback.md
 ---
 # Churn Diagnosis & Win-back
 

@@ -34,7 +34,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: wbr-operating
-source: ../capx-ai/playbooks/playbooks-output/040-weekly-business-review.md
 ---
 # Weekly Business Review
 
@@ -71,6 +70,3 @@ cancelled. The decision-output stage passes through a human review gate.
 - Manage inputs, not outputs. A target with no controllable lever is not actionable.
 - The decision output is a human review gate; material commitments escalate per the
   human-in-the-loop gates.
-
-The full source draft (input-metric doctrine, SPC charts, agenda detail) is at the
-path in the `source` field above.

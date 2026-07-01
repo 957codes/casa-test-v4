@@ -42,7 +42,6 @@ deliverable:
     - Change log with timestamped rationale
   max_words: 1000
 rubric: Passes only when the PRD is built from validated inputs rather than a feature request or opinion, defines the why and the what without specifying the how, and gives acceptance criteria specific enough that an engineering agent needs no clarifying questions.
-source: ../capx-ai/playbooks/playbooks-output/020-prd-drafting.md
 ---
 # PRD Drafting
 
@@ -72,5 +71,3 @@ brain. Drives engineering execution.
 - Do not draft a PRD off a feature request, an opinion, or a competitor reaction
   alone. Validated inputs only.
 - Define why and what, never how. If it names a database index, it is over-specced.
-
-The full source draft is at the path in the `source` field above.

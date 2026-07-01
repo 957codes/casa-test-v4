@@ -37,7 +37,6 @@ deliverable:
     - Business bank account
   max_words: 800
 rubric: Passes only when the entity structure is chosen against the documented inputs (defaulting to Delaware C-Corp, any deviation justified against a specific condition), the EIN and bank account are recorded, and the binding incorporation step is routed to the founder with any IP, licensing, or jurisdiction risk escalated.
-source: ../capx-ai/playbooks/playbooks-output/012-entity-formation.md
 ---
 # Entity Formation
 
@@ -70,6 +69,3 @@ privacy (014).
 - Escalate to human legal counsel if any founder has prior-employer IP claims, the
   business needs financial licensing, or founders sit in capital-control
   jurisdictions.
-
-The full source draft (entity decision tree, geography branches, failure cases) is
-at the path in the `source` field above.

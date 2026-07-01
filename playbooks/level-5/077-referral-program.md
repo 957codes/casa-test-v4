@@ -29,7 +29,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: referral-live
-source: ../capx-ai/playbooks/playbooks-output/077-referral-program.md
 ---
 # Referral Program
 

@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: ceo-dashboard-live
-source: ../capx-ai/playbooks/playbooks-output/037-ceo-dashboard-build.md
 ---
 # CEO Dashboard Build
 
@@ -67,6 +66,3 @@ the founder; the founder does not poll it. Feeds the Weekly Business Review (040
   outcomes (revenue, NRR).
 - Automated actions that commit spend or freeze hiring escalate to the founder per
   the human-in-the-loop gates.
-
-The full source draft (full metric definitions, benchmarks, alert table) is at the
-path in the `source` field above.

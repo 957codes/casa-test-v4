@@ -36,7 +36,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: launched
-source: ../capx-ai/playbooks/playbooks-output/050-hacker-news-launch.md
 ---
 # Hacker News Launch
 

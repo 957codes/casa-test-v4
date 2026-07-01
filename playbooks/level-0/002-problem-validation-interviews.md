@@ -41,7 +41,6 @@ deliverable:
     - Refined ICP
   max_words: 1500
 rubric: Passes only with at least 7 of 10 interviews confirming the problem unprompted and 5 or more participants showing active workarounds, every claim backed by tagged verbatim quotes rather than hypothetical intent answers, ending in a scored Go/No-Go/Pivot decision and a refined ICP.
-source: ../capx-ai/playbooks/playbooks-output/002-problem-validation-interviews.md
 ---
 # Problem Validation Interviews
 
@@ -75,6 +74,3 @@ something nobody pays for.
 - Fewer than 5 completed interviews, or only weak polite-agreement signals, is a
   failed run, not a pass. Reject hypothetical "would you use" answers as evidence.
 - No fabrication. If recruiting stalls, say so and ask the founder.
-
-The full source draft (Mom Test rules, JTBD switch interview, scoring) is at the
-path in the `source` field above.

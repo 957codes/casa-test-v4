@@ -42,7 +42,6 @@ deliverable:
     - Sign-off
   max_words: 800
 rubric: Passes only when each layer is chosen by explicit rule with its rejected alternatives recorded, any non-standard choice is justified by a specific measurable problem a boring alternative cannot solve, and a competent open-market hire could be productive on the stack within two weeks.
-source: ../capx-ai/playbooks/playbooks-output/019-tech-stack-selection.md
 ---
 # Tech Stack Selection
 
@@ -71,5 +70,3 @@ the company brain. Unblocks hosting and deployment (026).
 - A non-standard choice is only justified by a specific, measurable problem a
   boring alternative cannot solve. "Newer" or "want to learn it" is not a reason.
 - A competent open-market hire should be productive on the stack within two weeks.
-
-The full source draft is at the path in the `source` field above.

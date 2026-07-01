@@ -29,7 +29,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: pricing-direction-set
-source: ../capx-ai/playbooks/playbooks-output/042-packaging-tier-design.md
 ---
 # Packaging & Tier Design
 

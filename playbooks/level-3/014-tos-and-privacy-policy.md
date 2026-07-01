@@ -29,7 +29,6 @@ human_gate: true
 blocks_revenue: true
 recurring: false
 typical_milestone: legal-pages-published
-source: ../capx-ai/playbooks/playbooks-output/014-tos-and-privacy-policy.md
 ---
 # ToS & Privacy Policy
 
@@ -64,5 +63,3 @@ in the company brain.
 - Use clickwrap acceptance; browsewrap is often unenforceable.
 - For AI training on user data, prefer consent with an easy opt-out over a bare
   legitimate-interest claim.
-
-The full source draft is at the path in the `source` field above.

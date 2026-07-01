@@ -30,7 +30,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: onboarding-live
-source: ../capx-ai/playbooks/playbooks-output/078-welcome-email-sequence.md
 ---
 # Welcome Email Sequence
 

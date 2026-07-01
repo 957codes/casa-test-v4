@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: retention
-source: ../capx-ai/playbooks/playbooks-output/091-nps-csat-program.md
 ---
 # NPS / CSAT Program
 

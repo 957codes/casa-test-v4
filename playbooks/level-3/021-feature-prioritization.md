@@ -34,7 +34,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: backlog-ranked
-source: ../capx-ai/playbooks/playbooks-output/021-feature-prioritization.md
 ---
 # Feature Prioritization
 
@@ -66,5 +65,3 @@ inbound items. This playbook operates continuously and never completes.
 - Do not re-score items already in active development mid-sprint.
 - Keep the full audit trail: which inputs produced which score, so any challenge
   resolves against data, not seniority.
-
-The full source draft is at the path in the `source` field above.

@@ -38,7 +38,6 @@ deliverable:
     - Messaging hierarchy
   max_words: 600
 rubric: Passes only when positioning is anchored to the customer and the competitive alternative rather than the feature list, the statement is one to three sentences that deliberately excludes some audiences, and the copy carries no em-dashes or emojis.
-source: ../capx-ai/playbooks/playbooks-output/015-brand-positioning-statement.md
 ---
 # Brand Positioning Statement
 
@@ -72,5 +71,3 @@ trademark clearance (011), and visual identity (016).
 - Do not try to speak to everyone. A statement that excludes no one resonates with
   no one.
 - No em-dashes, no emojis in any statement copy.
-
-The full source draft is at the path in the `source` field above.

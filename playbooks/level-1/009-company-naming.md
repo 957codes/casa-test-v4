@@ -29,7 +29,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: company-exists
-source: ../capx-ai/playbooks/playbooks-output/009-company-naming.md
 ---
 # Company Naming
 
@@ -62,6 +61,3 @@ naming (012).
 - Final selection requires explicit founder approval. Hard to reverse later.
 - Do not lock a name whose exact-match domain and core trademark class are both
   blocked.
-
-The full source draft (eight-phase method, naming-agency frameworks, case studies)
-is at the path in the `source` field above.

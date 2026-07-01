@@ -29,7 +29,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: creative-engine-live
-source: ../capx-ai/playbooks/playbooks-output/072-creative-testing.md
 ---
 # Creative Testing
 

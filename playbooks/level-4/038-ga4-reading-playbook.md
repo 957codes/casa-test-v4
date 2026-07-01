@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: ga4-read-operating
-source: ../capx-ai/playbooks/playbooks-output/038-ga4-reading-playbook.md
 ---
 # GA4 Reading Playbook
 
@@ -65,6 +64,3 @@ alert. Feeds the Weekly Business Review (040).
   export.
 - For authenticated B2B products, prioritize the `user_id` dimension for
   cross-device journeys.
-
-The full source draft (identity spaces, sampling/cardinality, step thresholds) is
-at the path in the `source` field above.

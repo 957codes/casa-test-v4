@@ -31,7 +31,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: content-engine-live
-source: ../capx-ai/playbooks/playbooks-output/057-long-form-blog-post.md
 ---
 # Long-form Blog Post
 

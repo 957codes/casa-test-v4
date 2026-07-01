@@ -28,7 +28,6 @@ human_gate: true
 blocks_revenue: false
 recurring: false
 typical_milestone: company-exists
-source: ../capx-ai/playbooks/playbooks-output/013-founding-docs.md
 ---
 # Founding Docs
 
@@ -59,6 +58,3 @@ set, written to the company brain. Unlocks ToS and privacy (014).
   escalate for founder approval (human gate).
 - No equity is issued before IP assignment is signed; a clean chain of title is
   non-negotiable.
-
-The full source draft (cap-table math, QSBS, Slicing Pie, repapering) is at the
-path in the `source` field above.

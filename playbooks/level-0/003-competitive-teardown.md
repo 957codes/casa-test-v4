@@ -26,7 +26,6 @@ human_gate: false
 blocks_revenue: false
 recurring: false
 typical_milestone: validated-opportunity
-source: ../capx-ai/playbooks/playbooks-output/003-competitive-teardown.md
 ---
 # Competitive Teardown
 
@@ -59,6 +58,3 @@ operation, not a feature comparison.
   include non-software alternatives.
 - Every claimed vulnerability must cite evidence (a review, a filing, a pricing
   page), not assertion.
-
-The full source draft (7 Powers, JTBD competitor lens, Blue Ocean grid) is at the
-path in the `source` field above.

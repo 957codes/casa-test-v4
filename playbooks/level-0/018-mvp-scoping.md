@@ -39,7 +39,6 @@ deliverable:
     - Activation event and how it is measured
   max_words: 600
 rubric: Passes only when the slice is the smallest end-to-end path to the core value (buildable in a few weeks, else cut again), the non-goals are named explicitly so scope cannot creep back, and the activation event is defined with how it is measured, holding off full brand or visual identity.
-source: ../capx-ai/playbooks/playbooks-output/018-mvp-scoping.md
 ---
 # MVP Scoping
 
@@ -65,5 +64,3 @@ and PRD drafting (020).
 
 - If the slice cannot be built in a few weeks, it is not an MVP. Cut again.
 - No full brand or full visual identity at this stage; those are post-PMF.
-
-The full source draft is at the path in the `source` field above.

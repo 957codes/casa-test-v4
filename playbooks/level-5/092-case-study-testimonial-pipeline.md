@@ -31,7 +31,6 @@ human_gate: true
 blocks_revenue: false
 recurring: true
 typical_milestone: proof-and-evidence
-source: ../capx-ai/playbooks/playbooks-output/092-case-study-testimonial-pipeline.md
 ---
 # Case Study & Testimonial Pipeline
 

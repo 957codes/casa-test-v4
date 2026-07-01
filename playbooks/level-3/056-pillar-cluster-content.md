@@ -30,7 +30,6 @@ human_gate: false
 blocks_revenue: false
 recurring: true
 typical_milestone: topical-authority-built
-source: ../capx-ai/playbooks/playbooks-output/056-pillar-cluster-content.md
 ---
 # Pillar + Cluster Content
 
