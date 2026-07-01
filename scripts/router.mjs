@@ -200,6 +200,50 @@ function ready(pb, ctx) {
   return true;
 }
 
+// The 11 canonical departments authored on every playbook, plus the aliases an LLM most
+// naturally reaches for. A pulse byDepartment weight keyed by a name no playbook carries
+// silently matches nothing, so the founder's stated priority is dropped without a trace.
+// normalizeWeights remaps the known aliases deterministically (the fix for that silent
+// failure) so "Marketing": 1.6 actually lifts the Growth lane; unknownDepartments surfaces
+// any remaining unrecognized key so the caller can warn instead of ignore.
+export const DEPARTMENTS = new Set([
+  "Strategy", "Brand", "Product", "Engineering", "Data", "Growth",
+  "Sales", "Success", "Finance", "Legal", "Operations",
+]);
+const DEPT_ALIASES = {
+  marketing: "Growth", growth: "Growth",
+  design: "Product", ux: "Product", "product design": "Product",
+  support: "Success", "customer success": "Success", cs: "Success",
+  eng: "Engineering", engineering: "Engineering", ops: "Operations",
+  "business development": "Operations", bd: "Operations", bizdev: "Operations",
+};
+const canonicalDept = (name) =>
+  DEPARTMENTS.has(name) ? name : (DEPT_ALIASES[String(name).trim().toLowerCase()] || null);
+
+// Pure: returns a new weights object with byDepartment keys mapped to canonical departments.
+// An explicit canonical key is never overwritten by an aliased one. Unknown keys are left in
+// place (behavior unchanged for them) and reported by unknownDepartments. No byDepartment ->
+// weights returned unchanged, so anyone without a pulse is byte-identical.
+export function normalizeWeights(weights) {
+  if (!weights || !weights.byDepartment) return weights;
+  const mapped = {};
+  // Seed with the already-canonical keys so they win over any alias collision.
+  for (const [k, v] of Object.entries(weights.byDepartment)) if (DEPARTMENTS.has(k)) mapped[k] = v;
+  for (const [k, v] of Object.entries(weights.byDepartment)) {
+    if (DEPARTMENTS.has(k)) continue;
+    const c = canonicalDept(k);
+    if (c && !(c in mapped)) mapped[c] = v; // aliased -> canonical, unless canonical already set
+    else if (!c) mapped[k] = v; // truly unknown: keep as-is, unknownDepartments will flag it
+  }
+  return { ...weights, byDepartment: mapped };
+}
+
+// The byDepartment keys that are neither canonical nor a known alias (for a founder-facing warning).
+export function unknownDepartments(weights) {
+  if (!weights || !weights.byDepartment) return [];
+  return Object.keys(weights.byDepartment).filter((k) => !DEPARTMENTS.has(k) && !canonicalDept(k));
+}
+
 // Founder-priority multiplier from the pulse (deterministic lookup). No pulse means
 // 1, so behavior is unchanged for anyone without one. Explicit per-id overrides win,
 // then promote/demote lists, then department, then level, then the default.
@@ -399,9 +443,10 @@ function nextActions(playbooks, profile, { completed = [], level = 0, weights = 
   const flags = achievedFlags(profile, completed, level);
   const ctx = readinessCtx(playbooks, members, completedSet, flags, level);
   const fit = { currentLevel: level, stage: stageOf(level), models: modelSet(profile) };
-  // Fold the binding constraint into the effective weights. No constraint => effWeights === weights
-  // => byte-identical ranking (goldens preserved).
-  const effWeights = constraintWeights(weights, binding_constraint);
+  // Normalize aliased department keys (Marketing -> Growth, ...) so a founder priority written with a
+  // non-canonical name still bites, then fold in the binding constraint. No pulse / no constraint =>
+  // effWeights === weights => byte-identical ranking (goldens preserved).
+  const effWeights = constraintWeights(normalizeWeights(weights), binding_constraint);
   // Phase 2: the win-gap urgency scales the constraint's SURFACE plays by how far the company is from
   // its target (win_gap in [0,1]). gap 0 (or no win_definition) => multiplier 1 => byte-identical. Two
   // same-archetype companies with different gaps therefore score their surface plays differently.
@@ -518,3 +563,4 @@ function main() {
 
 if (process.argv[1] && (await import("node:url")).fileURLToPath(import.meta.url) === process.argv[1]) main();
 export { select, sequence, score, buildMap, nextActions, STATE_FLAGS, stageOf, modelSet, effectiveCriticality };
+// normalizeWeights, unknownDepartments, DEPARTMENTS are exported at their definitions above.

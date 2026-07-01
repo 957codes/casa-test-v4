@@ -179,10 +179,11 @@ gaps instead of answering everything cold.
                     "promote_ids": [...], "demote_ids": [...], "default": 1.0 } }
      ```
 
-     Departments are the canonical 11: Strategy, Brand, Product, Engineering, Data, Growth,
-     Sales, Finance, Legal, Success, Operations. (These are the values authored on every
-     playbook and validated by build-index; do not invent Marketing/Design/Support, which map
-     to Growth/Product/Success.) Down-weight what they are not doing yet, up-weight their focus.
+     Use the canonical 11 department names: Strategy, Brand, Product, Engineering, Data, Growth,
+     Sales, Finance, Legal, Success, Operations. These are the values authored on every playbook.
+     The engine normalizes the common aliases (Marketing to Growth, Design to Product, Support to
+     Success) and warns on any unrecognized name, but write the canonical names directly.
+     Down-weight what they are not doing yet, up-weight their focus.
      Be decisive but conservative: the weights nudge the order, your judgment in casa-next makes
      the final call.
 

@@ -15,7 +15,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, cpSync, appendFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { buildMap, nextActions, select } from "./router.mjs";
+import { buildMap, nextActions, select, unknownDepartments } from "./router.mjs";
 import { northStar } from "./northstar.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -149,6 +149,13 @@ function sync(dir) {
   const level = currentLevel(pb, profile, state);
   const pulse = existsSync(join(dir, "pulse.json")) ? JSON.parse(readFileSync(join(dir, "pulse.json"), "utf8")) : null;
   const weights = pulse?.weights || null;
+  // Known aliases (Marketing/Design/Support) are normalized by the engine; a truly unknown
+  // department key would silently weight nothing, so surface it rather than drop it.
+  const unknownDepts = unknownDepartments(weights);
+  if (unknownDepts.length) {
+    console.warn(`warning: pulse.json weights.byDepartment has unrecognized department(s): ${unknownDepts.join(", ")}. ` +
+      `Use the canonical 11 (Strategy, Brand, Product, Engineering, Data, Growth, Sales, Success, Finance, Legal, Operations); these keys will not affect ranking.`);
+  }
   // The binding constraint is read from state and passed DIRECTLY to the engine (not laundered
   // through pulse.json). Its absence is surfaced loudly so the Console never presents generic
   // ranking as if it were diagnosed.
@@ -202,6 +209,15 @@ function sync(dir) {
 }
 
 function init(dir) {
+  // Refuse to clobber a populated brain. cpSync would overwrite profile.json (the core),
+  // dials.json (the founder's autonomy settings), and the rendered files with empty template
+  // versions, silently destroying real work. A fresh or empty dir is fine (the template's own
+  // empty profile.json does not exist yet at this point).
+  if (existsSync(join(dir, "profile.json")) || existsSync(join(dir, "state.json"))) {
+    console.error(`a company brain already exists at ${dir}; init would overwrite it. Nothing changed. ` +
+      `Run 'brain.mjs sync ${dir}' to re-render, or delete the directory first to start over.`);
+    process.exit(2);
+  }
   mkdirSync(dir, { recursive: true });
   cpSync(TEMPLATE, dir, { recursive: true });
   if (!existsSync(join(dir, "state.json"))) writeState(dir, { completed: [] });

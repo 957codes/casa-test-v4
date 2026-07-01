@@ -10,6 +10,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { deriveStage, validateAnswers, CANONICAL_TYPES } from "../scripts/stage.mjs";
 import { businessState } from "../scripts/cos-context.mjs";
+import { normalizeWeights, unknownDepartments, nextActions } from "../scripts/router.mjs";
 import { INDEX, tmpBrain, cleanup, runScript } from "./helpers.mjs";
 
 function answers(extra = {}) {
@@ -191,6 +192,70 @@ test("cos-context and wave refuse to fabricate a company for an empty folder", (
     assert.equal(wv.code, 2);
     assert.match(wv.stderr, /run \/casa-start/);
   } finally { cleanup(empty); }
+});
+
+// ---- friend's report: department-vocabulary silent failure ----
+
+test("normalizeWeights remaps the aliases an LLM reaches for to canonical departments", () => {
+  const w = normalizeWeights({ byDepartment: { Marketing: 1.6, Design: 0.5, Support: 2, Finance: 1.2 } });
+  assert.equal(w.byDepartment.Growth, 1.6, "Marketing -> Growth");
+  assert.equal(w.byDepartment.Product, 0.5, "Design -> Product");
+  assert.equal(w.byDepartment.Success, 2, "Support -> Success");
+  assert.equal(w.byDepartment.Finance, 1.2, "canonical untouched");
+  assert.ok(!("Marketing" in w.byDepartment) && !("Design" in w.byDepartment));
+});
+
+test("an explicit canonical weight is never overwritten by an aliased one", () => {
+  const w = normalizeWeights({ byDepartment: { Growth: 0.4, Marketing: 3 } });
+  assert.equal(w.byDepartment.Growth, 0.4, "explicit Growth wins over aliased Marketing");
+});
+
+test("no byDepartment (or no pulse) passes through unchanged", () => {
+  assert.deepEqual(normalizeWeights(null), null);
+  assert.deepEqual(normalizeWeights({ default: 1 }), { default: 1 });
+});
+
+test("unknownDepartments flags a truly unrecognized key but not a known alias", () => {
+  assert.deepEqual(unknownDepartments({ byDepartment: { Vibes: 2, Marketing: 1 } }), ["Vibes"]);
+  assert.deepEqual(unknownDepartments({ byDepartment: { Growth: 1 } }), []);
+});
+
+test("an aliased department weight actually moves the ranking (end to end)", () => {
+  const profile = { primary_type: "saas", traits: ["b2c", "self_serve_only", "builds_software", "takes_payments", "recurring_revenue"] };
+  const base = nextActions(INDEX, profile, { level: 4 });
+  const growthIds = new Set(INDEX.filter((p) => p.department === "Growth").map((p) => p.id));
+  // Marketing -> Growth heavy promote should raise a Growth play's rank versus the neutral run.
+  const boosted = nextActions(INDEX, profile, { level: 4, weights: { byDepartment: { Marketing: 3 }, default: 1 } });
+  const topGrowthBase = base.findIndex((a) => growthIds.has(a.id));
+  const topGrowthBoosted = boosted.findIndex((a) => growthIds.has(a.id));
+  assert.ok(topGrowthBoosted <= topGrowthBase, "a Marketing (->Growth) boost cannot push Growth work down");
+  assert.notEqual(base[0].score, boosted[0].score, "the alias weight had an effect");
+});
+
+test("sync warns on an unrecognized department key in the pulse", () => {
+  const dir = seedBrain();
+  try {
+    const pulse = JSON.parse(readFileSync(join(dir, "pulse.json"), "utf8"));
+    pulse.weights = { ...(pulse.weights || {}), byDepartment: { ...(pulse.weights?.byDepartment || {}), Vibes: 2 } };
+    writeFileSync(join(dir, "pulse.json"), JSON.stringify(pulse));
+    const r = runScript("brain.mjs", ["sync", dir]);
+    assert.equal(r.code, 0, r.stderr);
+    assert.match(r.stderr, /unrecognized department/);
+    assert.match(r.stderr, /Vibes/);
+  } finally { cleanup(dir); }
+});
+
+// ---- friend's report: init must not clobber a populated brain ----
+
+test("init refuses to overwrite a populated brain and preserves its files", () => {
+  const dir = seedBrain();
+  try {
+    const before = readFileSync(join(dir, "profile.json"), "utf8");
+    const r = runScript("brain.mjs", ["init", dir]);
+    assert.equal(r.code, 2, "re-init on a populated brain is refused");
+    assert.match(r.stderr, /already exists/);
+    assert.equal(readFileSync(join(dir, "profile.json"), "utf8"), before, "profile.json untouched");
+  } finally { cleanup(dir); }
 });
 
 // ---- router CLI friendliness ----
