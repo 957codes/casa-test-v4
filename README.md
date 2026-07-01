@@ -5,7 +5,7 @@ The open control plane for building a company from your terminal.
 [![CI](https://github.com/957codes/casa/actions/workflows/test.yml/badge.svg)](https://github.com/957codes/casa/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-0-brightgreen)](docs/ARCHITECTURE.md)
-[![Tests](https://img.shields.io/badge/tests-173%20passing-brightgreen)](tests)
+[![Tests](https://img.shields.io/badge/tests-180%20passing-brightgreen)](tests)
 
 AI made a single developer as productive as a whole team. Capx Casa does the same
 for the founder. A solo founder is excellent at one thing, but a company is a hundred
@@ -220,7 +220,7 @@ Control:
 
 - **Zero runtime dependencies.** The engine imports only Node built-ins. A clone
   is 2.6 MB and needs no `npm install` to run.
-- **173 tests, green in under a second**, on Node's built-in test runner. A
+- **180 tests, green in under a second**, on Node's built-in test runner. A
   preflight validator (`npm run check`) verifies the whole plugin before anything
   ships.
 - **The engine is deterministic where it counts.** Eligibility, dependencies,

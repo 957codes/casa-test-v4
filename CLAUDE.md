@@ -474,4 +474,12 @@ short, date entries, never delete the protocol).
   -> 173 tests (tests/launch-fixes.test.mjs), preflight 72 checks, all green; npm test glob made
   Node-20-safe. Remaining: a recorded demo GIF (vhs tape) and the GitHub social-preview image (web
   UI only).
+- v4 testing-report defects closed (2026-07-01, second pass). A friend's end-to-end report
+  (published at capx-casa-testing-v4.vercel.app, a markdown report, NOT a hosted Casa surface) named
+  three defects. compliance-trust phantom persona confirmed gone; brain.mjs init now REFUSES a
+  populated brain (cpSync would have silently overwritten profile.json/dials.json); router.mjs
+  normalizeWeights + unknownDepartments deterministically remap LLM department aliases
+  (Marketing->Growth, Design->Product, Support->Success) so a non-canonical pulse weight bites
+  instead of silently matching nothing, and brain.mjs sync warns on any truly unknown key.
+  Byte-identical ranking for canonical weights (goldens hold). Suite 173 -> 180, preflight 72, CI green.
 <!-- /CASA:AUTO:repo-status -->
