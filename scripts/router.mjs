@@ -3,12 +3,12 @@
 // The LLM (in casa-start / casa-next / playbook-planner) calls this for the
 // graph math and only handles fuzzy work (intake, disambiguation, phrasing).
 //
-//   node scripts/router.mjs plan <profile.yaml|json> [--out <brainDir>] [--level N] [--completed a,b]
-//   node scripts/router.mjs next <profile.yaml|json> [--completed a,b] [--level N]
+//   node scripts/router.mjs plan <profile.json> [--out <brainDir>] [--level N] [--completed a,b]
+//   node scripts/router.mjs next <profile.json> [--completed a,b] [--level N]
 //
 // Library exports (select, sequence, score, buildMap, nextActions) are importable.
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -51,8 +51,17 @@ const levelKey = (l) => (l === "always-on" ? -1 : Number(l));
 function loadIndex() {
   return JSON.parse(readFileSync(join(repo, "playbooks", "_index.json"), "utf8")).playbooks;
 }
+const USAGE = "usage: router.mjs plan|next <profile.json> [--out dir] [--completed a,b] [--level N] [--weights pulse.json] [--constraint state.json] [--department X]\n" +
+  "       for a company brain: router.mjs next company-brain/profile.json --constraint company-brain/state.json";
 function loadProfile(file) {
-  return JSON.parse(readFileSync(file, "utf8"));
+  if (!existsSync(file)) { console.error(`no such file: ${file}\n${USAGE}`); process.exit(2); }
+  if (statSync(file).isDirectory()) { console.error(`expected a JSON file, got a directory: ${file}\n${USAGE}`); process.exit(2); }
+  try {
+    return JSON.parse(readFileSync(file, "utf8"));
+  } catch (e) {
+    console.error(`could not parse ${file} as JSON: ${e.message}`);
+    process.exit(2);
+  }
 }
 
 // state flags the company has at a given level (pre_* are true early, drop later)
@@ -469,7 +478,7 @@ function main() {
   const args = parseArgs(rest);
   const playbooks = loadIndex();
   const profileFile = args._[0];
-  if (!cmd || !profileFile) { console.error("usage: router.mjs plan|next <profile.yaml> [--out dir] [--completed a,b] [--level N]"); process.exit(2); }
+  if (!cmd || !profileFile) { console.error(USAGE); process.exit(2); }
   const profile = loadProfile(profileFile);
   const level = args.level ?? 0;
   const completed = args.completed ?? [];

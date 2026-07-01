@@ -35,10 +35,14 @@ export function businessState(dir) {
     company: {
       types: [profile.primary_type, profile.secondary_type].filter(Boolean),
       traits: profile.traits || [],
-      binding_constraint: profile.binding_constraint || null,
+      // stage.mjs writes the founder's do-or-die constraint to state.json; a hand-authored
+      // profile.json may carry it instead. State wins: it is what the router actually reads.
+      binding_constraint: state.binding_constraint || profile.binding_constraint || null,
       level: map.current_level ?? null,
       completed: (state.completed || []).length,
     },
+    // Plays parked on a real-world founder action (interviews, a filing, a call), with the reason.
+    waiting_on_founder: state.waiting || {},
     departments: Object.keys(d.departments || {}),
     autonomy: d,
     in_flight: inFlight(dir),
@@ -51,5 +55,11 @@ export function businessState(dir) {
 if (process.argv[1] && process.argv[1] === fileURLToPath(import.meta.url)) {
   const dir = process.argv[2];
   if (!dir) { console.error("usage: cos-context.mjs <brainDir>"); process.exit(2); }
+  // Fail loud rather than briefing from fabricated defaults: a CoS reading a folder with no
+  // company must say "run /casa-start", never invent a plausible business.
+  if (!existsSync(join(dir, "profile.json")) && !existsSync(join(dir, "state.json"))) {
+    console.error(`no company brain at ${dir} (run /casa-start first)`);
+    process.exit(2);
+  }
   console.log(JSON.stringify(businessState(dir), null, 2));
 }

@@ -1,4 +1,4 @@
-# CLAUDE.md — {{COMPANY_NAME}} operating contract
+# CLAUDE.md: {{COMPANY_NAME}} operating contract
 
 This file is the operating contract for building this company with Capx Casa. It
 is loaded at the start of every Claude Code session, so it is the first thing you
@@ -36,11 +36,18 @@ Operating rules:
 
 ## 2. Commands
 
-- `/casa-start` begins or resumes the company: validate the idea (Level 0), and on
-  the GO decision, select and sequence the playbooks for this business.
+- `/casa-start` begins or resumes the company: validate the idea, and on the GO
+  decision, select and sequence the playbooks for this business.
+- `/casa` opens every work session: one plain-English briefing with the single
+  recommended move, what is in flight, and what is waiting on you, then it asks
+  before doing anything.
+- `/casa-help` shows where the company is, what to run now, and the full command
+  index on one screen.
 - `/casa-next` gives the single next best action (and anything you can do in
   parallel right now).
 - `/casa-map` shows and lets the founder approve the personalized build map.
+- `/casa-approvals` shows and clears the approvals queue and the per-department
+  autonomy dials.
 
 ## 3. Company profile
 

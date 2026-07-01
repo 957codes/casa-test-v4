@@ -100,20 +100,39 @@ function canonical(playbooks) {
   return { traits, types };
 }
 
+// The types the interview offers and every downstream layer (northstar.mjs, roster.mjs)
+// understands. Deliberately NOT the catalog's applies_to union: the catalog also matches on
+// audience words like "b2b", and accepting those here silently mis-derives the north star.
+export const CANONICAL_TYPES = ["saas", "marketplace", "ecommerce", "b2b-service", "crypto", "consumer", "content", "hardware"];
+const CONSTRAINT_ARCHETYPES = ["no_users", "no_revenue", "runway_burn", "regulatory_legal", "tech_scale", "hiring_capacity"];
+
 export function validateAnswers(answers, playbooks) {
   if (!answers || typeof answers !== "object") throw new Error("answers must be an object");
   if (!TIERS.includes(answers.tier)) {
     throw new Error(`unknown stage tier "${answers.tier}" (expected one of ${TIERS.join(", ")})`);
   }
-  const { traits, types } = canonical(playbooks);
-  if (answers.type && !types.has(answers.type)) {
-    throw new Error(`unknown business type "${answers.type}" (expected one of ${[...types].sort().join(", ")})`);
+  if (answers.type && !CANONICAL_TYPES.includes(answers.type)) {
+    throw new Error(`unknown business type "${answers.type}" (expected one of ${CANONICAL_TYPES.join(", ")})`);
   }
+  if (answers.secondary_type && !CANONICAL_TYPES.includes(answers.secondary_type)) {
+    throw new Error(`unknown secondary type "${answers.secondary_type}" (expected one of ${CANONICAL_TYPES.join(", ")}, or empty)`);
+  }
+  if (answers.north_star_archetype && !(answers.north_star_archetype in NS_PROMOTE)) {
+    throw new Error(`unknown north_star_archetype "${answers.north_star_archetype}" (expected one of ${Object.keys(NS_PROMOTE).join(", ")})`);
+  }
+  if (answers.constraint_archetype && !CONSTRAINT_ARCHETYPES.includes(answers.constraint_archetype)) {
+    throw new Error(`unknown constraint_archetype "${answers.constraint_archetype}" (expected one of ${CONSTRAINT_ARCHETYPES.join(", ")})`);
+  }
+  const { traits } = canonical(playbooks);
   for (const t of answers.traits || []) {
     if (!traits.has(t)) throw new Error(`unknown trait "${t}" (not in the catalog vocabulary)`);
   }
   for (const g of answers.gaps || []) {
-    if (!playbooks.some((p) => p.id === g)) throw new Error(`gap "${g}" is not a known playbook id`);
+    if (!playbooks.some((p) => p.id === g)) {
+      const near = playbooks.filter((p) => p.id.includes(g) || g.includes(p.id)).map((p) => p.id).slice(0, 3);
+      const hint = near.length ? ` Did you mean: ${near.join(", ")}?` : " Gap values must be playbook ids from playbooks/_index.json.";
+      throw new Error(`gap "${g}" is not a known playbook id.${hint}`);
+    }
   }
 }
 
@@ -183,6 +202,16 @@ export function deriveStage(answers, playbooks) {
         (m.applies_to.requires_traits || []).every((r) => !STATE_FLAGS.has(r) || traitSet.has(r)),
     )
     .map((m) => m.id);
+  // Answers can PROVE a play done even when the constraint surface would keep it visible: a
+  // business with LIVE revenue that told us how it charges has selected its revenue model, so
+  // never headline "Revenue Model Selection" at a company already earning subscription revenue.
+  // Live revenue is the proof; a pre-revenue declaration keeps the play open (the model is a
+  // hypothesis until someone pays). Proof beats the surface exclusion, never a named gap.
+  if (["revenue", "scaling"].includes(answers.tier) && ["subscription", "one-time", "transaction-fee", "ads"].includes(answers.monetization)) {
+    for (const id of ["revenue-model-selection"]) {
+      if (memberIds.has(id) && !gaps.has(id) && !completed_seed.includes(id)) completed_seed.push(id);
+    }
+  }
 
   const binding_constraint = deriveBindingConstraint(answers, playbooks, memberIds);
   return { profile, start_level, completed_seed, gaps_not_applicable, binding_constraint };
@@ -333,6 +362,17 @@ function main() {
     // The binding constraint is first-class state, read directly by the router (survives pulse.json
     // regeneration). Only written when the founder named one; its absence is what triggers fail-loud.
     if (result.binding_constraint) state.binding_constraint = result.binding_constraint;
+    // Start every recurring loop's cadence at onboarding day. Without this, a brand-new company
+    // opens its first session with every loop "overdue since forever" and the briefing drowns.
+    if (!prev.loops) {
+      const loopsFile = join(brainDir, "loops.json");
+      if (existsSync(loopsFile)) {
+        const today = new Date().toISOString().slice(0, 10);
+        state.loops = Object.fromEntries(
+          (JSON.parse(readFileSync(loopsFile, "utf8")).loops || []).map((l) => [l.id, today]),
+        );
+      }
+    }
     writeFileSync(statePath, JSON.stringify(state, null, 2));
     // Seed the initial business-aware pulse, but never clobber a richer hand-authored one.
     const pulsePath = join(brainDir, "pulse.json");

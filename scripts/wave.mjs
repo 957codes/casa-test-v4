@@ -9,7 +9,7 @@
 //
 // Library export computeWave(playbooks, profile, opts) is importable for tests.
 
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { nextActions } from "./router.mjs";
@@ -70,6 +70,12 @@ function main() {
   const di = args.indexOf("--department"); const department = di !== -1 ? args[di + 1] : null;
   const ki = args.indexOf("--k"); const k = ki !== -1 ? Number(args[ki + 1]) : 3;
   if (!dir) { console.error("usage: wave.mjs <brainDir> [--department X] [--k N]"); process.exit(2); }
+  // Fail loud on a missing brain: a fabricated default wave for a nonexistent company is worse
+  // than an error.
+  if (!existsSync(join(dir, "profile.json"))) {
+    console.error(`no company brain at ${dir} (run /casa-start first)`);
+    process.exit(2);
+  }
   const profile = readJson(join(dir, "profile.json"), {});
   const map = readJson(join(dir, "build-map.json"), {});
   const state = readJson(join(dir, "state.json"), {});

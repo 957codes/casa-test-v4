@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 // Company-brain state engine. Performs the deterministic self-update of the
-// company workspace: derives the current level, writes build-map.yaml + NOW.md,
+// company workspace: derives the current level, writes build-map.json + NOW.md,
 // and rewrites the CLAUDE.md AUTO blocks (T1-T5) safely (inside markers only).
 //
 //   node scripts/brain.mjs init     <brainDir>
 //   node scripts/brain.mjs sync     <brainDir>
 //   node scripts/brain.mjs complete <brainDir> <playbook-id> [<id> ...]
+//   node scripts/brain.mjs waiting  <brainDir> <playbook-id> <reason...>
+//   node scripts/brain.mjs unwait   <brainDir> <playbook-id>
 //
-// progress lives in <brainDir>/state.yaml { completed: [...] }; everything else
-// (build-map.yaml, NOW.md, CLAUDE.md blocks) is rendered from it + profile.yaml.
+// progress lives in <brainDir>/state.json { completed: [...] }; everything else
+// (build-map.json, NOW.md, CLAUDE.md blocks) is rendered from it + profile.json.
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, cpSync, appendFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -107,11 +109,21 @@ function setBlock(text, section, inner) {
   return re.test(text) ? text.replace(re, (_m, open, close) => `${open}\n${inner}\n${close}`) : text;
 }
 
-function nowText(profile, actions, level, due = [], spend = 0, ns = null) {
+// Plain-language labels for the constraint archetypes (founder-facing; the ids stay canonical).
+const CONSTRAINT_LABELS = {
+  no_users: "no users yet", no_revenue: "no revenue yet", runway_burn: "runway",
+  regulatory_legal: "regulatory clearance", tech_scale: "reliability at scale", hiring_capacity: "capacity",
+};
+
+function nowText(profile, actions, level, due = [], spend = 0, ns = null, bc = null, waiting = [], titles = null) {
   const top = actions[0];
   const out = [`# Now`, ``, `Company: ${profile.company_name || profile.one_liner || "(unnamed)"}`,
     `Level ${level}: ${LEVEL_NAMES[level] || level}`];
   if (ns) out.push(`North star now: ${ns.label}${ns.band === "scale" ? "" : ` (heading toward ${ns.mature_growth_label})`}`);
+  if (bc?.archetype) {
+    const leads = (bc.lead_departments || []).join(", ");
+    out.push(`Do-or-die constraint: ${CONSTRAINT_LABELS[bc.archetype] || bc.archetype}${leads ? ` (${leads} lead)` : ""}`);
+  }
   if (spend > 0) out.push(`Spend to date (Capx Pay): $${spend}`);
   out.push(``, `## Next action`);
   if (!top) out.push(`- Nothing ready at this level. Run /casa-map or advance the level.`);
@@ -119,6 +131,10 @@ function nowText(profile, actions, level, due = [], spend = 0, ns = null) {
     out.push(`- ${top.title}  (${top.id})${top.human_gate ? "  [needs your approval]" : ""}`);
     const par = actions.slice(1, 4); // next-highest ready actions, any level (all are startable now)
     if (par.length) { out.push(``, `## You can also start now`); for (const p of par) out.push(`- ${p.title}  (${p.id})`); }
+  }
+  if (waiting.length) {
+    out.push(``, `## Waiting on you`);
+    for (const [id, reason] of waiting) out.push(`- ${titles?.get(id) || id}: ${reason}`);
   }
   if (due.length) { out.push(``, `## Loops due now`); for (const l of due) out.push(`- ${l.title}  (loop: ${l.id})`); }
   out.push(``, `This file is kept current by the router. Do not hand-edit.`);
@@ -150,7 +166,8 @@ function sync(dir) {
     default_lead: binding_constraint ? null : defaultLead(profile),
     ...map,
   }, null, 2));
-  writeFileSync(join(dir, "NOW.md"), nowText(profile, actions, level, due, spend, ns));
+  const waiting = Object.entries(state.waiting || {});
+  writeFileSync(join(dir, "NOW.md"), nowText(profile, actions, level, due, spend, ns, binding_constraint, waiting, titles));
 
   // self-update the CLAUDE.md AUTO blocks (T1-T5)
   const cmPath = join(dir, "CLAUDE.md");
@@ -187,21 +204,45 @@ function sync(dir) {
 function init(dir) {
   mkdirSync(dir, { recursive: true });
   cpSync(TEMPLATE, dir, { recursive: true });
-  if (!existsSync(join(dir, "state.yaml"))) writeState(dir, { completed: [] });
+  if (!existsSync(join(dir, "state.json"))) writeState(dir, { completed: [] });
   console.log(`initialized company brain at ${dir}`);
 }
 
 function complete(dir, ids) {
   const state = readState(dir);
   state.completed = [...new Set([...(state.completed || []), ...ids])];
+  // Completing a play clears its waiting-on-founder flag.
+  for (const id of ids) if (state.waiting?.[id]) delete state.waiting[id];
   writeState(dir, state);
   const r = sync(dir);
   console.log(`marked done: ${ids.join(", ")}`);
+  // Honesty nudge, not a gate: done work should leave a record behind.
+  const noArtifact = ids.filter((id) => !existsSync(join(dir, "outputs", id)));
+  if (noArtifact.length) console.log(`note: no artifact recorded at outputs/ for: ${noArtifact.join(", ")}. Done work should leave its deliverable in company-brain/outputs/<id>/.`);
   console.log(`now level ${r.level}, ${r.completed} done. Next: ${r.top ? r.top.title : "(none)"}`);
 }
 
+function setWaiting(dir, id, reason) {
+  if (!playbooks().some((p) => p.id === id)) { console.error(`unknown playbook id "${id}"`); process.exit(2); }
+  const state = readState(dir);
+  state.waiting = state.waiting || {};
+  state.waiting[id] = reason;
+  writeState(dir, state);
+  sync(dir);
+  console.log(`marked waiting on you: ${id} (${reason})`);
+}
+
+function unwait(dir, id) {
+  const state = readState(dir);
+  if (!state.waiting?.[id]) { console.error(`${id} is not marked waiting`); process.exit(2); }
+  delete state.waiting[id];
+  writeState(dir, state);
+  sync(dir);
+  console.log(`cleared waiting: ${id}`);
+}
+
 const [cmd, dir, ...rest] = process.argv.slice(2);
-if (!cmd || !dir) { console.error("usage: brain.mjs init|sync|complete <brainDir> [ids...]"); process.exit(2); }
+if (!cmd || !dir) { console.error("usage: brain.mjs init|sync|complete|waiting|unwait|loop-ran|priority-ran|experiment|due <brainDir> [args...]"); process.exit(2); }
 if (cmd === "init") init(dir);
 else if (cmd === "sync") { const r = sync(dir); console.log(`synced: level ${r.level}, ${r.completed} done, ${r.member_count} playbooks. Next: ${r.top ? r.top.title : "(none)"}`); }
 else if (cmd === "complete") { if (!rest.length) { console.error("complete needs at least one playbook id"); process.exit(2); } complete(dir, rest); }
@@ -209,4 +250,6 @@ else if (cmd === "loop-ran") { if (!rest.length) { console.error("loop-ran needs
 else if (cmd === "priority-ran") { const s = readState(dir); s.last_priority = today(); writeState(dir, s); sync(dir); console.log(`priority re-evaluated ${today()}`); }
 else if (cmd === "experiment") { if (!rest.length) { console.error("experiment needs a JSON record"); process.exit(2); } const rec = JSON.parse(rest.join(" ")); rec.logged = today(); appendFileSync(join(dir, "experiments.jsonl"), JSON.stringify(rec) + "\n"); console.log(`logged experiment ${rec.id || "(unnamed)"} ${today()}`); }
 else if (cmd === "due") { const pb = playbooks(); const profile = readProfile(dir); const state = readState(dir); const level = currentLevel(pb, profile, state); console.log(JSON.stringify(dueLoops(dir, profile, level, state))); }
+else if (cmd === "waiting") { if (rest.length < 2) { console.error("waiting needs a playbook id and a reason"); process.exit(2); } setWaiting(dir, rest[0], rest.slice(1).join(" ")); }
+else if (cmd === "unwait") { if (!rest.length) { console.error("unwait needs a playbook id"); process.exit(2); } unwait(dir, rest[0]); }
 else { console.error(`unknown command: ${cmd}`); process.exit(2); }
